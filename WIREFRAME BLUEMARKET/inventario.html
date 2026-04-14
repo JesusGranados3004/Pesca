@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario - PescaDirecta</title>
+    
+
+    <link rel="stylesheet" href="css/inventario.css">
+</head>
+<body>
+
+    <header class="inventario-header">
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <nav>
+            
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <div class="seccion">
+            <h2>Registro de Productos</h2>
+            
+            <form id="formProducto" class="form-grid" action="php/guardar_producto.php" method="POST">
+                <input type="text" name="codigo" placeholder="Código" required>
+                <input type="text" name="nombre" placeholder="Nombre del producto" required>
+                <input type="number" name="precio_compra" placeholder="Precio compra" step="0.01" required>
+                <input type="number" name="precio_venta" placeholder="Precio venta" step="0.01" required>
+                <input type="number" name="stock_alerta" placeholder="Stock de alerta" required>
+                <input type="number" name="stock_inicial" placeholder="Stock inicial" required>
+                <input type="number" name="precio_promo" placeholder="Precio promocional" step="0.01">
+                
+                <select name="tipo_pez" required>
+                    <option value="">Seleccione tipo de pez</option>
+                    <option value="pargo">Pargo</option>
+                    <option value="bonito">Bonito</option>
+                    <option value="robalo">Robalo</option>
+                    <option value="atun">Atún</option>
+                    <option value="mojarra">Mojarra</option>
+                    <option value="sierra">Sierra</option>
+                </select>
+
+                <div class="alerta" id="alertaPrecio">
+                     El precio de compra no puede ser mayor al precio de venta
+                </div>
+
+                <div class="boton-guardar">
+                    <button type="submit" class="btn-secundario">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+
+      
+        <div class="seccion">
+            <div class="barra">
+                <button class="btn-nuevo" onclick="nuevoProducto()">+ Nuevo</button>
+                <input type="text" id="buscarCodigo" placeholder="Buscar por código">
+                <input type="text" id="buscarNombre" placeholder="Buscar por nombre">
+            </div>
+
+            <div class="tabla-contenedor">
+                <table id="tablaInventario">
+                    <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>NOMBRE</th>
+                            <th>PRECIO</th>
+                            <th>TIPO</th>
+                            <th>STOCK</th>
+                            <th>ESTADO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/inventario.js"></script>
+    <script src="js/sesion.js"></script>
+</body>
+</html>

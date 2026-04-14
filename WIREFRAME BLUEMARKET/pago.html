@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda - PescaDirecta</title>
+    
+   
+    <link rel="stylesheet" href="css/tienda.css">
+</head>
+<body>
+
+    <header class="tienda-header">
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <nav>
+            
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <h1 style="margin-bottom: 30px; color: var(--color-secundario);">Nuestros Productos</h1>
+
+        <div class="tienda-grid" id="productosContainer">
+        </div>
+
+  
+        <div class="pagos-section">
+            <h2>Formas de Pago Aceptadas</h2>
+            <div class="metodos-grid">
+                <div class="metodo-pago">
+                    <div class="icono">💳</div>
+                    <span>Tarjeta Crédito</span>
+                </div>
+                <div class="metodo-pago">
+                    <div class="icono">💳</div>
+                    <span>Tarjeta Débito</span>
+                </div>
+                <div class="metodo-pago">
+                    <div class="icono">💰</div>
+                    <span>Contra entrega</span>
+                </div>
+                <div class="metodo-pago">
+                    <div class="icono">📱</div>
+                    <span>Nequi</span>
+                </div>
+                <div class="metodo-pago">
+                    <div class="icono">📱</div>
+                    <span>Daviplata</span>
+                </div>
+                <div class="metodo-pago">
+                    <div class="icono">🏦</div>
+                    <span>Transferencia</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="carrito-widget" onclick="verCarrito()">
+        🛒
+        <span class="carrito-cantidad" id="cantidadCarrito">0</span>
+    </div>
+
+    <script src="js/tienda.js"></script>
+    <script src="js/sesion.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PescaDirecta - Pescado Fresco Directo del Pescador</title>
+    
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <div class="menu">
+           
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Pescado fresco directo del pescador</h1>
+            <p>Compra pescado artesanal directamente de comunidades costeras y apoya la economía local. Frescura garantizada, trazabilidad completa.</p>
+            <a href="#productos" class="btn-primario">Explorar productos</a>
+        </div>
+        <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1534043464124-3882d84f3850?w=600" alt="Pescador">
+        </div>
+    </section>
+
+    <section class="products" id="productos">
+        <h2>Productos disponibles</h2>
+        <div class="grid">
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>¿Por qué usar la plataforma?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <div class="icon">🎣</div>
+                <h3>Venta directa</h3>
+                <p>Sin intermediarios. Del pescador a tu mesa.</p>
+            </div>
+            <div class="feature">
+                <div class="icon">📍</div>
+                <h3>Trazabilidad</h3>
+                <p>Conoce el origen exacto de tu pescado.</p>
+            </div>
+            <div class="feature">
+                <div class="icon">🤝</div>
+                <h3>Apoyo local</h3>
+                <p>Impulsa la economía de comunidades costeras.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 PescaDirecta - Plataforma de Comercialización de Pesca Artesanal</p>
+    </footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-contenido">
+            <span id="cerrarModal">&times;</span>
+            <h2 id="modalTitulo"></h2>
+            <p id="modalDescripcion"></p>
+            <div id="modalPrecio"></div>
+            <div class="modal-info">
+                <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
+                <p><strong>📦 Cantidad:</strong> <span id="modalCantidad"></span></p>
+                <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
+                <p><strong>📅 Fecha:</strong> <span id="modalFecha"></span></p>
+                <p><strong>🎣 Tipo pesca:</strong> <span id="modalTipo"></span></p>
+            </div>
+            <button class="btn-primario" style="width: 100%; margin-top: 20px;">
+                Agregar al carrito
+            </button>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/sesion.js"></script>
+</body>
+</html>

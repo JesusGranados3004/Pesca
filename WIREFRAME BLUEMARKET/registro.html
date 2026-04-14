@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - PescaDirecta</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+    <header class="auth-header">
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <nav>
+             <a href="index.html"> Inicio</a>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Crear Cuenta</h2>
+            
+            <div id="mensaje" class="mensaje"></div>
+
+            <div class="tipo-select">
+                <select id="tipoUsuario" required>
+                    <option value="">Selecciona tipo de usuario</option>
+                    <option value="consumidor">🛒 Consumidor</option>
+                    <option value="vendedor">🎣 Vendedor/Pescador</option>
+                </select>
+            </div>
+
+            <form id="formConsumidor" class="formulario-dinamico" style="display: none;">
+                <h3>Registro de Consumidor</h3>
+                <input type="hidden" name="tipo" value="consumidor">
+                
+                <input type="text" name="nombre" placeholder="Nombre *" required>
+                <input type="text" name="apellido1" placeholder="Primer apellido *" required>
+                <input type="text" name="apellido2" placeholder="Segundo apellido">
+                <input type="text" name="direccion" placeholder="Dirección">
+                <input type="tel" name="telefono" placeholder="Teléfono">
+                <input type="email" name="email" placeholder="Correo electrónico *" required>
+                <input type="password" name="password" placeholder="Contraseña *" required minlength="6">
+                <input type="password" name="password_confirm" placeholder="Confirmar contraseña *" required>
+                
+                <button type="submit" class="auth-btn">Registrarse</button>
+            </form>
+
+            <form id="formVendedor" class="formulario-dinamico" style="display: none;">
+                <h3>Registro de Vendedor</h3>
+                <input type="hidden" name="tipo" value="vendedor">
+                
+                <input type="text" name="nombre" placeholder="Nombre *" required>
+                <input type="text" name="apellido1" placeholder="Primer apellido *" required>
+                <input type="text" name="apellido2" placeholder="Segundo apellido">
+                <input type="date" name="fecha_nacimiento">
+                <input type="text" name="direccion" placeholder="Dirección/Puerto *" required>
+                <input type="tel" name="telefono" placeholder="Teléfono">
+                <input type="email" name="email" placeholder="Correo electrónico *" required>
+                <input type="password" name="password" placeholder="Contraseña *" required minlength="6">
+                <input type="password" name="password_confirm" placeholder="Confirmar contraseña *" required>
+                
+                <button type="submit" class="auth-btn">Registrarse</button>
+            </form>
+
+            <div class="auth-switch">
+                ¿Ya tienes cuenta? <a href="iniciarSesion.html">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/registro.js"></script>
+    <script src="js/sesion.js"></script>
+
+</body>
+</html>

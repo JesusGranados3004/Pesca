@@ -1,0 +1,271 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f2f2f2;
+    color: #333;
+    line-height: 1.6;
+}
+
+.inventario-header {
+    background: #0077b6;
+    color: white;
+    padding: 15px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inventario-header .logo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.inventario-header nav {
+    display: flex;
+    gap: 20px;
+}
+
+.inventario-header nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.inventario-header nav a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.container {
+    padding: 40px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.seccion {
+    background: white;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.seccion h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #023e8a;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.form-grid input,
+.form-grid select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.form-grid select {
+    background: white;
+    cursor: pointer;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
+    outline: none;
+    border-color: #0077b6;
+    box-shadow: 0 0 5px rgba(0,119,182,0.3);
+}
+
+.alerta {
+    grid-column: 1 / -1;
+    color: #ff5a5a;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+    background: #ffebee;
+    border-radius: 6px;
+    display: none;
+}
+
+.alerta.visible {
+    display: block;
+}
+
+.boton-guardar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+button {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #1a252f;
+}
+
+.barra {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.barra input {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.btn-nuevo {
+    background: #0077b6;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-nuevo:hover {
+    background: #0096c7;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background: #f8f9fa;
+    color: #023e8a;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+.disponible {
+    color: #27ae60;
+    font-weight: bold;
+    background: #e8f5e9;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.nodisponible {
+    color: #c62828;
+    font-weight: bold;
+    background: #ffebee;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.acciones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icono {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.btn-editar {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.btn-editar:hover {
+    background: #f57c00;
+    color: white;
+}
+
+.btn-eliminar {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.btn-eliminar:hover {
+    background: #c62828;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .inventario-header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .barra input {
+        width: 100%;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 10px 8px;
+    }
+}
