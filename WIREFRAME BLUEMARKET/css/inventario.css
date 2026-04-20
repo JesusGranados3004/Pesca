@@ -1,3 +1,4 @@
+/* === ESTILOS BASE === */
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +12,7 @@ body {
     line-height: 1.6;
 }
 
+/* === HEADER === */
 .inventario-header {
     background: #0077b6;
     color: white;
@@ -39,10 +41,12 @@ body {
     transition: 0.3s;
 }
 
-.inventario-header nav a:hover {
+.inventario-header nav a:hover,
+.inventario-header nav a.activo {
     background: rgba(255,255,255,0.2);
 }
 
+/* === CONTAINER === */
 .container {
     padding: 40px 60px;
     max-width: 1400px;
@@ -63,14 +67,112 @@ body {
     color: #023e8a;
 }
 
-.form-grid {
+/* === VISTAS (toggle) === */
+.vista-lista,
+.vista-formulario {
+    display: none;
+}
+
+.vista-lista.activa,
+.vista-formulario.activa {
+    display: block;
+}
+
+/* === STATS BAR === */
+.stats-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+}
+
+.stat-card h3 {
+    color: #0077b6;
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* === BOTONES VENDEDOR === */
+.acciones-vendedor {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-agregar {
+    background: #27ae60;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-agregar:hover {
+    background: #2ecc71;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+}
+
+.btn-historial {
+    background: #f39c12;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-historial:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+.btn-volver {
+    background: #7f8c8d;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background: #6c7a7d;
+}
+
+/* === FORMULARIO === */
+form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 15px;
 }
 
-.form-grid input,
-.form-grid select {
+form input,
+form select {
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -78,31 +180,92 @@ body {
     width: 100%;
 }
 
-.form-grid select {
-    background: white;
-    cursor: pointer;
-}
-
-.form-grid input:focus,
-.form-grid select:focus {
+form input:focus,
+form select:focus {
     outline: none;
     border-color: #0077b6;
     box-shadow: 0 0 5px rgba(0,119,182,0.3);
 }
 
-.alerta {
+/* === DRAG & DROP === */
+.drop-zone {
     grid-column: 1 / -1;
-    color: #ff5a5a;
+    border: 3px dashed #0077b6;
+    border-radius: 10px;
+    padding: 40px;
     text-align: center;
-    font-size: 14px;
-    padding: 10px;
-    background: #ffebee;
-    border-radius: 6px;
-    display: none;
+    background: #f8f9fa;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-bottom: 15px;
 }
 
-.alerta.visible {
+.drop-zone:hover,
+.drop-zone.dragover {
+    background: #e3f2fd;
+    border-color: #0096c7;
+    transform: scale(1.02);
+}
+
+.drop-zone.dragover {
+    background: #bbdefb;
+}
+
+.drop-zone__icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.drop-zone__text {
+    color: #666;
+    font-size: 16px;
+}
+
+.drop-zone__text strong {
+    color: #0077b6;
     display: block;
+    margin-bottom: 5px;
+}
+
+.drop-zone__preview {
+    display: none;
+    margin-top: 15px;
+}
+
+.drop-zone__preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    object-fit: cover;
+}
+
+.drop-zone__file-info {
+    margin-top: 10px;
+    color: #0077b6;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.drop-zone__remove {
+    margin-top: 10px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.drop-zone__remove:hover {
+    background: #cc0000;
+    transform: scale(1.05);
+}
+
+.hidden-input {
+    display: none;
 }
 
 .boton-guardar {
@@ -112,21 +275,25 @@ body {
     margin-top: 10px;
 }
 
-button {
-    background: #2c3e50;
+.btn-secundario {
+    background: #0077b6;
     color: white;
     border: none;
-    padding: 12px 40px;
+    padding: 14px 40px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
     transition: 0.3s;
-    font-size: 14px;
 }
 
-button:hover {
-    background: #1a252f;
+.btn-secundario:hover {
+    background: #0096c7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,119,182,0.3);
 }
 
+/* === TABLA === */
 .barra {
     display: flex;
     gap: 10px;
@@ -136,24 +303,10 @@ button:hover {
 }
 
 .barra input {
-    width: 200px;
+    width: 300px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-}
-
-.btn-nuevo {
-    background: #0077b6;
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-nuevo:hover {
-    background: #0096c7;
 }
 
 .tabla-contenedor {
@@ -183,6 +336,13 @@ th {
 
 tr:hover {
     background: #f8f9fa;
+}
+
+.producto-img-tabla {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .disponible {
@@ -220,6 +380,7 @@ tr:hover {
     align-items: center;
     justify-content: center;
     transition: 0.3s;
+    font-size: 14px;
 }
 
 .btn-editar {
@@ -242,6 +403,7 @@ tr:hover {
     color: white;
 }
 
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
     .inventario-header {
         padding: 15px 20px;
@@ -253,12 +415,20 @@ tr:hover {
         padding: 20px;
     }
     
+    .stats-bar {
+        flex-direction: column;
+    }
+    
     .barra input {
         width: 100%;
     }
     
-    .form-grid {
+    form {
         grid-template-columns: 1fr;
+    }
+    
+    .drop-zone {
+        padding: 30px 20px;
     }
     
     table {
@@ -267,5 +437,10 @@ tr:hover {
     
     th, td {
         padding: 10px 8px;
+    }
+    
+    .producto-img-tabla {
+        width: 40px;
+        height: 40px;
     }
 }

@@ -25,7 +25,7 @@
             <a href="#productos" class="btn-primario">Explorar productos</a>
         </div>
         <div class="hero-img">
-            <img src="https://images.unsplash.com/photo-1534043464124-3882d84f3850?w=600" alt="Pescador">
+            <img src="uploads/productos/pesca.jpg" alt="Pescador">
         </div>
     </section>
 
@@ -61,23 +61,36 @@
     </footer>
 
     <div id="modal" class="modal">
-        <div class="modal-contenido">
-            <span id="cerrarModal">&times;</span>
-            <h2 id="modalTitulo"></h2>
-            <p id="modalDescripcion"></p>
-            <div id="modalPrecio"></div>
-            <div class="modal-info">
-                <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
-                <p><strong>📦 Cantidad:</strong> <span id="modalCantidad"></span></p>
-                <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
-                <p><strong>📅 Fecha:</strong> <span id="modalFecha"></span></p>
-                <p><strong>🎣 Tipo pesca:</strong> <span id="modalTipo"></span></p>
-            </div>
-            <button class="btn-primario" style="width: 100%; margin-top: 20px;">
-                Agregar al carrito
+    <div class="modal-contenido">
+        <span id="cerrarModal">&times;</span>
+        
+        
+        <div class="modal-imagen-container">
+            <img id="modalImagen" src="" alt="" >
+        </div>
+        
+        <h2 id="modalTitulo"></h2>
+        <p id="modalDescripcion"></p>
+        <div id="modalPrecio"></div>
+        
+        <div class="modal-info">
+            <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
+            <p><strong>📦 Cantidad disponible:</strong> <span id="modalCantidad"></span></p>
+            <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
+            <p><strong>📅 Fecha de captura:</strong> <span id="modalFecha"></span></p>
+            <p><strong>🎣 Tipo de pesca:</strong> <span id="modalTipo"></span></p>
+        </div>
+        
+        <div class="modal-botones">
+            <button class="btn-primario btn-carrito" onclick="agregarAlCarrito()">
+                🛒 Agregar al carrito
+            </button>
+            <button class="btn-chat" onclick="iniciarChatVendedor()">
+                💬 Chat con vendedor
             </button>
         </div>
     </div>
+</div>
 
     <script src="js/index.js"></script>
     <script src="js/sesion.js"></script>

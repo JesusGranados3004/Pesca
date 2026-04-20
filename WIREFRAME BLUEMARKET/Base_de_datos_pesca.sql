@@ -31,6 +31,7 @@ CREATE TABLE productos (
     nombre VARCHAR(100),
     descripcion varchar(250),
     precio DECIMAL(10,2),
+    imagen VARCHAR(300),
 
     origen VARCHAR(100),
     disponibilidad BOOLEAN,
@@ -74,9 +75,11 @@ VALUES
 ('Carlos', 'Lopez', 'Martinez', '1990-05-10', 'Santa Marta', '3009876543', 'carlos@gmail.com', '123456');
 
 INSERT INTO productos 
-(nombre, descripcion, precio, origen, disponibilidad, pescador_responsable, cantidad, fecha, tipo_pesca, vendedor_id)
+(nombre, descripcion, precio,imagen, origen, disponibilidad, pescador_responsable, cantidad, fecha, tipo_pesca, vendedor_id)
 VALUES 
 
-('Pargo Rojo', 'Pescado fresco del Caribe', 25000, 'Santa Marta', true, 'Carlos', 10, '2026-04-12', 'Artesanal', 1),
+('Pargo Rojo', 'Pescado fresco del Caribe', 25000, 'https://168benoa.com/wp-content/uploads/2018/04/1-red-snapper-whole.jpg', 'Santa Marta', true, 'Carlos', 10, '2026-04-12', 'Artesanal', 1),
 
-('Mojarra', 'Pescado fresco de río', 18000, 'Magdalena', true, 'Luis', 15, '2026-04-11', 'Artesanal', 1);
+('Mojarra', 'Pescado fresco de río', 18000, 'https://tse3.mm.bing.net/th/id/OIP.n4y8C4pTvs_-tBVOPpw8wQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3', 'Magdalena', true, 'Luis', 15, '2026-04-11', 'Artesanal', 1);
+
+select * from consumidores;
