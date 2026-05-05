@@ -6,6 +6,7 @@
     <title>PescaDirecta - Pescado Fresco Directo del Pescador</title>
     
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
 
@@ -14,7 +15,8 @@
             <div class="logo">🐟 PescaDirecta</div>
         </a>
         <div class="menu">
-           
+           <a href="index.html" class="active">🏠 Inicio</a>
+           <a href="pago.html">🛒 Carrito</a>
         </div>
     </nav>
 
@@ -29,9 +31,15 @@
         </div>
     </section>
 
+    <!-- FILTROS DE TIENDA -->
     <section class="products" id="productos">
         <h2>Productos disponibles</h2>
-        <div class="grid">
+        
+        <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <input type="text" id="search-input" placeholder="Buscar productos..." style="padding:10px; width:300px; border-radius:8px; border:2px solid #0077b6;">
+        </div>
+
+        <div class="grid" id="products-grid">
         </div>
     </section>
 
@@ -61,38 +69,44 @@
     </footer>
 
     <div id="modal" class="modal">
-    <div class="modal-contenido">
-        <span id="cerrarModal">&times;</span>
-        
-        
-        <div class="modal-imagen-container">
-            <img id="modalImagen" src="" alt="" >
-        </div>
-        
-        <h2 id="modalTitulo"></h2>
-        <p id="modalDescripcion"></p>
-        <div id="modalPrecio"></div>
-        
-        <div class="modal-info">
-            <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
-            <p><strong>📦 Cantidad disponible:</strong> <span id="modalCantidad"></span></p>
-            <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
-            <p><strong>📅 Fecha de captura:</strong> <span id="modalFecha"></span></p>
-            <p><strong>🎣 Tipo de pesca:</strong> <span id="modalTipo"></span></p>
-        </div>
-        
-        <div class="modal-botones">
-            <button class="btn-primario btn-carrito" onclick="agregarAlCarrito()">
-                🛒 Agregar al carrito
-            </button>
-            <button class="btn-chat" onclick="iniciarChatVendedor()">
-                💬 Chat con vendedor
-            </button>
+        <div class="modal-contenido">
+            <span id="cerrarModal">&times;</span>
+            <div class="modal-imagen-container">
+                <img id="modalImagen" src="" alt="">
+            </div>
+            <h2 id="modalTitulo"></h2>
+            <p id="modalDescripcion"></p>
+            <div id="modalPrecio"></div>
+            <div class="modal-info">
+                <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
+                <p><strong>⚖️ Kilos disponibles:</strong> <span id="modalCantidad"></span></p>
+                <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
+                <p><strong>📅 Fecha:</strong> <span id="modalFecha"></span></p>
+                <p><strong>🎣 Tipo:</strong> <span id="modalTipo"></span></p>
+            </div>
+            <div class="selector-cantidad" style="margin:15px 0;padding:15px;background:#f8f9fa;border-radius:10px;text-align:center;">
+                <label for="inputCantidad"><strong>⚖️ Cantidad que deseas (kg):</strong></label>
+                <input 
+                    type="number" 
+                    id="inputCantidad" 
+                    value="1" 
+                    min="0.5" 
+                    max="999" 
+                    step="0.1"
+                    placeholder="Ej: 2.5"
+                    style="display:block;width:150px;margin:10px auto;padding:10px;font-size:18px;text-align:center;border:2px solid #0077b6;border-radius:8px;"
+                >
+                <small id="stockInfo" style="color:#666;"></small>
+                <small id="errorCantidad" style="color:#e74c3c;display:none;"></small>
+            </div>
+            <div class="modal-botones">
+                <button class="btn-primario btn-carrito" onclick="agregarAlCarrito()">🛒 Agregar al carrito</button>
+                <button class="btn-chat" onclick="iniciarChatVendedor()">💬 Chat con vendedor</button>
+            </div>
         </div>
     </div>
-</div>
 
-    <script src="js/index.js"></script>
+    <script src="js/index.js" defer></script>
     <script src="js/sesion.js"></script>
 </body>
 </html>

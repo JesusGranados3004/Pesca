@@ -3,69 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda - PescaDirecta</title>
-    
-   
+    <title>Carrito - PescaDirecta</title>
     <link rel="stylesheet" href="css/tienda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
-
     <header class="tienda-header">
         <a href="index.html" style="text-decoration: none;">
             <div class="logo">🐟 PescaDirecta</div>
         </a>
         <nav>
-            
+            <a href="index.html">🏠 Inicio</a>
+            <a href="pago.html" class="activo">🛒 Carrito</a>
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container carrito-container">
+        <h1 style="margin-bottom: 30px; color: #0077b6;">🛒 Tu Carrito</h1>
         
-        <h1 style="margin-bottom: 30px; color: var(--color-secundario);">Nuestros Productos</h1>
-
-        <div class="tienda-grid" id="productosContainer">
-        </div>
-
-  
-        <div class="pagos-section">
-            <h2>Formas de Pago Aceptadas</h2>
-            <div class="metodos-grid">
-                <div class="metodo-pago">
-                    <div class="icono">💳</div>
-                    <span>Tarjeta Crédito</span>
-                </div>
-                <div class="metodo-pago">
-                    <div class="icono">💳</div>
-                    <span>Tarjeta Débito</span>
-                </div>
-                <div class="metodo-pago">
-                    <div class="icono">💰</div>
-                    <span>Contra entrega</span>
-                </div>
-                <div class="metodo-pago">
-                    <div class="icono">📱</div>
-                    <span>Nequi</span>
-                </div>
-                <div class="metodo-pago">
-                    <div class="icono">📱</div>
-                    <span>Daviplata</span>
-                </div>
-                <div class="metodo-pago">
-                    <div class="icono">🏦</div>
-                    <span>Transferencia</span>
+        <div class="carrito-layout">
+            <!-- Lista de productos -->
+            <div>
+                <div id="carritoItems"></div>
+                <div id="carritoVacio" class="carrito-vacio" style="display: none;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>🛒 Tu carrito está vacío</h2>
+                    <p>Explora nuestros productos frescos.</p>
+                    <a href="index.html#productos">← Ver productos</a>
                 </div>
             </div>
+            
+            <!-- Resumen de compra (de carrito.html) -->
+            <div id="carritoResumen" class="cart-summary" style="display: none;">
+                <h3><i class="fas fa-receipt"></i> Resumen de Compra</h3>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotalCarrito">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Envío</span>
+                    <span id="envioCarrito">Gratis</span>
+                </div>
+                <hr style="border: none; border-top: 1px solid #ddd; margin: 15px 0;">
+                <div class="summary-row total">
+                    <strong>Total</strong>
+                    <strong id="totalCarrito">$0.00</strong>
+                </div>
+                
+                <p id="mensajeStock" style="color: #e74c3c; display: none; margin-top: 10px;">⚠️ Revisa las cantidades</p>
+                
+                <button class="btn-pagar" id="btnPagar" onclick="procederPago()">
+                    <i class="fas fa-lock"></i> 💳 Proceder al pago
+                </button>
+                <button class="btn-vaciar" onclick="vaciarCarrito()">
+                    <i class="fas fa-trash"></i> Vaciar Carrito
+                </button>
+            </div>
         </div>
-
-    </div>
-
-
-    <div class="carrito-widget" onclick="verCarrito()">
-        🛒
-        <span class="carrito-cantidad" id="cantidadCarrito">0</span>
     </div>
 
     <script src="js/tienda.js"></script>
     <script src="js/sesion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            verificarSesion()
+            // .then(res => res.json())
+            // .then(sesion => {
+            //         if (!sesion.logueado) {
+            //             alert('Acceso denegado. Solo usuarios pueden acceder a esta sección.');
+            //             window.location.href = 'iniciarSesion.html';
+            //             return;
+            //         }
+            //         cargarMisProductos();
+            //     })
+            //     .catch(() => {
+            //         alert('Error al verificar sesión. Por favor, inicia sesión nuevamente.');
+            //         window.location.href = 'iniciarSesion.html';
+            //     });
+        });
+    </script>
 </body>
 </html>

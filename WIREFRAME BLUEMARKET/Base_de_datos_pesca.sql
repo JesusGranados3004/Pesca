@@ -11,7 +11,7 @@ CREATE TABLE consumidores (
     correo VARCHAR(100) UNIQUE,
     contraseña VARCHAR(100),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+);	
 
 CREATE TABLE vendedores (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +36,7 @@ CREATE TABLE productos (
     origen VARCHAR(100),
     disponibilidad BOOLEAN,
     pescador_responsable VARCHAR(100),
-    cantidad INT,
+    cantidad DECIMAL(10,2),
     fecha DATE,
     tipo_pesca VARCHAR(100),
 
@@ -57,7 +57,7 @@ CREATE TABLE detalle_compra (
     id INT AUTO_INCREMENT PRIMARY KEY,
     compra_id INT,
     producto_id INT,
-    cantidad INT,
+    cantidad DECIMAL(10,2),
     precio DECIMAL(10,2),
 
     FOREIGN KEY (compra_id) REFERENCES compras(id),
@@ -78,8 +78,7 @@ INSERT INTO productos
 (nombre, descripcion, precio,imagen, origen, disponibilidad, pescador_responsable, cantidad, fecha, tipo_pesca, vendedor_id)
 VALUES 
 
-('Pargo Rojo', 'Pescado fresco del Caribe', 25000, 'https://168benoa.com/wp-content/uploads/2018/04/1-red-snapper-whole.jpg', 'Santa Marta', true, 'Carlos', 10, '2026-04-12', 'Artesanal', 1),
+('Pargo Rojo', 'Pescado fresco del Caribe', 25000, 'https://168benoa.com/wp-content/uploads/2018/04/1-red-snapper-whole.jpg', 'Santa Marta', true, 'Carlos', 10.50, '2026-04-12', 'Artesanal', 1),
 
-('Mojarra', 'Pescado fresco de río', 18000, 'https://tse3.mm.bing.net/th/id/OIP.n4y8C4pTvs_-tBVOPpw8wQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3', 'Magdalena', true, 'Luis', 15, '2026-04-11', 'Artesanal', 1);
-
+('Mojarra', 'Pescado fresco de río', 18000, 'https://tse3.mm.bing.net/th/id/OIP.n4y8C4pTvs_-tBVOPpw8wQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3', 'Magdalena', true, 'Luis', 15.00, '2026-04-11', 'Artesanal', 1);
 select * from consumidores;

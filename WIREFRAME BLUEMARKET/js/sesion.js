@@ -1,22 +1,10 @@
-console.log("✅ sesion.js cargado");
-
 document.addEventListener('DOMContentLoaded', function() {
-    
     fetch('php/verificar_sesion.php')
     .then(r => r.json())
     .then(data => {
-        console.log("Estado sesión:", data);
         actualizarMenu(data);
-        
-        // Si es vendedor en index.html, mostrar botón de panel
-        // if (data.logueado && data.tipo === 'vendedor') {
-        //     mostrarBotonVendedor(data.nombre);
-        // }
     })
-    .catch(err => {
-        console.log("Error verificando sesión:", err);
-        actualizarMenu({logueado: false});
-    });
+    .catch(() => actualizarMenu({logueado: false}));
 
     function actualizarMenu(sesion) {
         const menu = document.querySelector('.menu');
@@ -25,27 +13,92 @@ document.addEventListener('DOMContentLoaded', function() {
         menu.innerHTML = '';
 
         if (sesion.logueado) {
-            
             const nombre = sesion.nombre || 'Usuario';
             
             if (sesion.tipo === 'vendedor') {
-                // Menú para vendedores
                 menu.innerHTML = `
                     <a href="inventario.html">📦 MI INVENTARIO</a>
-                    <a href="pago.html">🛒 TIENDA</a>
                     <span style="color: white; padding: 8px 15px;">👤 ${nombre}</span>
                     <a href="#" onclick="cerrarSesion(event)" style="background: rgba(255,255,255,0.2); border-radius: 4px;">🚪 Cerrar Sesión</a>
+                    <!-- BOTÓN FLOTANTE DEL CARRITO -->
+                    <a href="pago.html" id="btnCarrito" style="
+                        position: fixed;
+                        bottom: 30px;
+                        right: 30px;
+                        width: 60px;
+                        height: 60px;
+                        background: #0077b6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 28px;
+                        text-decoration: none;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                        z-index: 1000;
+                        transition: transform 0.2s;
+                    ">
+                        🛒
+                        <span id="badgeCarrito" style="
+                            position: absolute;
+                            top: -5px;
+                            right: -5px;
+                            background: #e74c3c;
+                            color: white;
+                            font-size: 12px;
+                            font-weight: bold;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                        ">0</span>
+                    </a>
                 `;
             } else {
-                // Menú para consumidores
                 menu.innerHTML = `
-                    <a href="pago.html">🛒 TIENDA</a>
+                    <a href="mis_compras.html">📋 Mis Compras</a>
                     <a href="index.html#productos">🔍 Productos</a>
                     <span style="color: white; padding: 8px 15px;">👤 ${nombre}</span>
                     <a href="#" onclick="cerrarSesion(event)" style="background: rgba(255,255,255,0.2); border-radius: 4px;">🚪 Cerrar Sesión</a>
+                    <!-- BOTÓN FLOTANTE DEL CARRITO -->
+                    <a href="pago.html" id="btnCarrito" style="
+                        position: fixed;
+                        bottom: 30px;
+                        right: 30px;
+                        width: 60px;
+                        height: 60px;
+                        background: #0077b6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 28px;
+                        text-decoration: none;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                        z-index: 1000;
+                        transition: transform 0.2s;
+                    ">
+                        🛒
+                        <span id="badgeCarrito" style="
+                            position: absolute;
+                            top: -5px;
+                            right: -5px;
+                            background: #e74c3c;
+                            color: white;
+                            font-size: 12px;
+                            font-weight: bold;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                        ">0</span>
+                    </a>
                 `;
             }
-
         } else {
             menu.innerHTML = `
                 <a href="iniciarSesion.html">INICIAR SESIÓN</a>
@@ -55,34 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// function mostrarBotonVendedor(nombre) {
-//     Si estamos en index.html, mostrar banner de vendedor
-//     const hero = document.querySelector('.hero-text');
-//     if (hero && !document.getElementById('bannerVendedor')) {
-//         const banner = document.createElement('div');
-//         banner.id = 'bannerVendedor';
-//         banner.innerHTML = `
-//             <div style="background: #e8f5e9; border-left: 4px solid #27ae60; padding: 15px; margin-bottom: 20px; border-radius: 8px;">
-//                 <p style="margin: 0; color: #2e7d32; font-weight: 600;">
-//                     👋 ¡Hola ${nombre}! Bienvenido a tu panel de vendedor
-//                 </p>
-//                 <div style="margin-top: 10px;">
-//                     <a href="inventario_vendedor.html" style="background: #27ae60; color: white; padding: 8px 20px; border-radius: 6px; text-decoration: none; display: inline-block; margin-right: 10px;">
-//                         📦 Ir a Mi Inventario
-//                     </a>
-//                     <a href="inventario.html" style="background: #0077b6; color: white; padding: 8px 20px; border-radius: 6px; text-decoration: none; display: inline-block;">
-//                         ➕ Agregar Producto
-//                     </a>
-//                 </div>
-//             </div>
-//         `;
-//         hero.insertBefore(banner, hero.firstChild);
-//     }
-// }
-
 function cerrarSesion(e) {
     e.preventDefault();
-    
     if (!confirm('¿Cerrar sesión?')) return;
     
     fetch('php/logout.php')
@@ -95,3 +122,56 @@ function cerrarSesion(e) {
         location.href = 'index.html';
     });
 }
+
+// === VERIFICAR SESIÓN ===
+function mostrarMensajeSesion() {
+    let tiempo = 5;
+
+    let mensaje = document.createElement("div");
+    mensaje.style.position = "fixed";
+    mensaje.style.top = "20px";
+    mensaje.style.left = "50%";
+    mensaje.style.transform = "translateX(-50%)";
+    mensaje.style.background = "#e74c3c";
+    mensaje.style.color = "white";
+    mensaje.style.padding = "15px 25px";
+    mensaje.style.borderRadius = "10px";
+    mensaje.style.fontSize = "18px";
+    mensaje.style.zIndex = "9999";
+
+    document.body.appendChild(mensaje);
+
+    let intervalo = setInterval(() => {
+        mensaje.textContent = `🔒 Sesión requerida. Redirigiendo en ${tiempo}...`;
+        tiempo--;
+
+        if (tiempo < 0) {
+            clearInterval(intervalo);
+            window.location.href = "iniciarSesion.html";
+        }
+    }, 1000);
+}
+
+// === FETCH SEGURO ===
+function fetchSeguro(url, opciones = {}) {
+    return fetch(url, opciones)
+        .then(res => {
+            if (res.status === 401) {
+                mostrarMensajeSesion();
+                // Redirigir inmediatamente para páginas protegidas
+                window.location.href = "iniciarSesion.html";
+                throw new Error("No autorizado");
+            }
+            // Devolver respuesta cruda, NO hacer .json()
+            return res;
+        });
+}
+
+// === VERIFICAR SESIÓN DIRECTA ===
+function verificarSesion() {
+    return fetchSeguro('php/verificar_sesion.php');
+}
+
+// === EXPONER GLOBALMENTE ===
+window.fetchSeguro = fetchSeguro;
+window.verificarSesion = verificarSesion;

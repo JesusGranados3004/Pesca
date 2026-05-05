@@ -1,7 +1,4 @@
-console.log("✅ registro.js cargado");
-
 document.addEventListener('DOMContentLoaded', function() {
-    
     const tipoSelect = document.getElementById("tipoUsuario");
     const formConsumidor = document.getElementById("formConsumidor");
     const formVendedor = document.getElementById("formVendedor");
@@ -9,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (tipoSelect) {
         tipoSelect.addEventListener('change', function() {
-            console.log("Tipo seleccionado:", this.value);
-            
             if (formConsumidor) formConsumidor.style.display = 'none';
             if (formVendedor) formVendedor.style.display = 'none';
             
@@ -29,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!form) return;
 
         form.addEventListener('submit', function(e) {
-            console.log("Submit en", this.id);
             e.preventDefault();
             e.stopPropagation();
 
@@ -49,14 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             mostrarMensaje("Procesando...", "info");
 
-            fetch('php/registro.php', {
-                method: 'POST',
-                body: datos
-            })
+            fetch('php/registro.php', { method: 'POST', body: datos })
             .then(r => r.text())
             .then(texto => {
-                console.log("Servidor dice:", texto);
-                
                 if (texto.trim() === 'ok') {
                     mostrarMensaje("¡Registro exitoso!", "exito");
                     this.reset();
@@ -65,10 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     mostrarMensaje("Error: " + texto, "error");
                 }
             })
-            .catch(err => {
-                console.error("Error:", err);
-                mostrarMensaje("Error de conexión", "error");
-            });
+            .catch(() => mostrarMensaje("Error de conexión", "error"));
         });
     }
 
