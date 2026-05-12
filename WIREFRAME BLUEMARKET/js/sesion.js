@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('php/verificar_sesion.php')
+    // Verificar sesión SIN usar caché del navegador
+    fetch('php/verificar_sesion.php', {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+    })
     .then(r => r.json())
     .then(data => {
         actualizarMenu(data);
@@ -20,41 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="inventario.html">📦 MI INVENTARIO</a>
                     <span style="color: white; padding: 8px 15px;">👤 ${nombre}</span>
                     <a href="#" onclick="cerrarSesion(event)" style="background: rgba(255,255,255,0.2); border-radius: 4px;">🚪 Cerrar Sesión</a>
-                    <!-- BOTÓN FLOTANTE DEL CARRITO -->
-                    <a href="pago.html" id="btnCarrito" style="
-                        position: fixed;
-                        bottom: 30px;
-                        right: 30px;
-                        width: 60px;
-                        height: 60px;
-                        background: #0077b6;
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 28px;
-                        text-decoration: none;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                        z-index: 1000;
-                        transition: transform 0.2s;
-                    ">
-                        🛒
-                        <span id="badgeCarrito" style="
-                            position: absolute;
-                            top: -5px;
-                            right: -5px;
-                            background: #e74c3c;
-                            color: white;
-                            font-size: 12px;
-                            font-weight: bold;
-                            width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            display: none;
-                            align-items: center;
-                            justify-content: center;
-                        ">0</span>
-                    </a>
                 `;
             } else {
                 menu.innerHTML = `
@@ -62,42 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <a href="index.html#productos">🔍 Productos</a>
                     <span style="color: white; padding: 8px 15px;">👤 ${nombre}</span>
                     <a href="#" onclick="cerrarSesion(event)" style="background: rgba(255,255,255,0.2); border-radius: 4px;">🚪 Cerrar Sesión</a>
-                    <!-- BOTÓN FLOTANTE DEL CARRITO -->
-                    <a href="pago.html" id="btnCarrito" style="
-                        position: fixed;
-                        bottom: 30px;
-                        right: 30px;
-                        width: 60px;
-                        height: 60px;
-                        background: #0077b6;
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 28px;
-                        text-decoration: none;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                        z-index: 1000;
-                        transition: transform 0.2s;
-                    ">
-                        🛒
-                        <span id="badgeCarrito" style="
-                            position: absolute;
-                            top: -5px;
-                            right: -5px;
-                            background: #e74c3c;
-                            color: white;
-                            font-size: 12px;
-                            font-weight: bold;
-                            width: 24px;
-                            height: 24px;
-                            border-radius: 50%;
-                            display: none;
-                            align-items: center;
-                            justify-content: center;
-                        ">0</span>
-                    </a>
                 `;
+                
+                const carrito = document.createElement('div');
+                carrito.className = 'carrito-flotante';
+                carrito.onclick = () => window.location.href = 'pago.html';
+                carrito.innerHTML = '🛒 <span class="carrito-badge" id="badgeCarrito">0</span>';
+                document.body.appendChild(carrito);
             }
         } else {
             menu.innerHTML = `
@@ -112,57 +52,40 @@ function cerrarSesion(e) {
     e.preventDefault();
     if (!confirm('¿Cerrar sesión?')) return;
     
-    fetch('php/logout.php')
+    fetch('php/logout.php', { cache: 'no-store' })
     .then(() => {
         localStorage.clear();
-        location.href = 'index.html';
+        // Redirigir con parámetro único para evitar caché
+        window.location.href = 'index.html?_=' + new Date().getTime();
     })
     .catch(() => {
         localStorage.clear();
-        location.href = 'index.html';
+        window.location.href = 'index.html?_=' + new Date().getTime();
     });
 }
 
-// === VERIFICAR SESIÓN ===
-function mostrarMensajeSesion() {
-    let tiempo = 5;
-
-    let mensaje = document.createElement("div");
-    mensaje.style.position = "fixed";
-    mensaje.style.top = "20px";
-    mensaje.style.left = "50%";
-    mensaje.style.transform = "translateX(-50%)";
-    mensaje.style.background = "#e74c3c";
-    mensaje.style.color = "white";
-    mensaje.style.padding = "15px 25px";
-    mensaje.style.borderRadius = "10px";
-    mensaje.style.fontSize = "18px";
-    mensaje.style.zIndex = "9999";
-
-    document.body.appendChild(mensaje);
-
-    let intervalo = setInterval(() => {
-        mensaje.textContent = `🔒 Sesión requerida. Redirigiendo en ${tiempo}...`;
-        tiempo--;
-
-        if (tiempo < 0) {
-            clearInterval(intervalo);
-            window.location.href = "iniciarSesion.html";
-        }
-    }, 1000);
-}
+// === DETECTAR "ATRÁS" DEL NAVEGADOR ===
+// Cuando el usuario vuelve con "atrás", verificar sesión de nuevo
+window.addEventListener('pageshow', function(event) {
+    // event.persisted es true cuando la página viene de caché (botón "atrás")
+    if (event.persisted) {
+        // Forzar recarga desde el servidor
+        window.location.reload();
+    }
+});
 
 // === FETCH SEGURO ===
 function fetchSeguro(url, opciones = {}) {
+    // Siempre agregar cache: 'no-store'
+    opciones.cache = 'no-store';
+    
     return fetch(url, opciones)
         .then(res => {
             if (res.status === 401) {
                 mostrarMensajeSesion();
-                // Redirigir inmediatamente para páginas protegidas
                 window.location.href = "iniciarSesion.html";
                 throw new Error("No autorizado");
             }
-            // Devolver respuesta cruda, NO hacer .json()
             return res;
         });
 }
@@ -172,6 +95,24 @@ function verificarSesion() {
     return fetchSeguro('php/verificar_sesion.php');
 }
 
+// === MENSAJE DE SESIÓN ===
+function mostrarMensajeSesion() {
+    let tiempo = 5;
+    let mensaje = document.createElement("div");
+    mensaje.style.cssText = "position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#e74c3c;color:white;padding:15px 25px;border-radius:10px;font-size:18px;z-index:9999;";
+    document.body.appendChild(mensaje);
+
+    let intervalo = setInterval(() => {
+        mensaje.textContent = `🔒 Sesión requerida. Redirigiendo en ${tiempo}...`;
+        tiempo--;
+        if (tiempo < 0) {
+            clearInterval(intervalo);
+            window.location.href = "iniciarSesion.html";
+        }
+    }, 1000);
+}
+
 // === EXPONER GLOBALMENTE ===
 window.fetchSeguro = fetchSeguro;
 window.verificarSesion = verificarSesion;
+window.cerrarSesion = cerrarSesion;

@@ -81,4 +81,4 @@ VALUES
 ('Pargo Rojo', 'Pescado fresco del Caribe', 25000, 'https://168benoa.com/wp-content/uploads/2018/04/1-red-snapper-whole.jpg', 'Santa Marta', true, 'Carlos', 10.50, '2026-04-12', 'Artesanal', 1),
 
 ('Mojarra', 'Pescado fresco de río', 18000, 'https://tse3.mm.bing.net/th/id/OIP.n4y8C4pTvs_-tBVOPpw8wQHaFj?rs=1&pid=ImgDetMain&o=7&rm=3', 'Magdalena', true, 'Luis', 15.00, '2026-04-11', 'Artesanal', 1);
-select * from consumidores;
+select * from compras;

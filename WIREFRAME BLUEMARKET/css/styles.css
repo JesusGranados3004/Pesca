@@ -11,10 +11,6 @@ body {
     line-height: 1.6;
 }
 
-.texto-centrado {
-    text-align: center;
-}
-
 .container {
     padding: 40px 60px;
     max-width: 1400px;

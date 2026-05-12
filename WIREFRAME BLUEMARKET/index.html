@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PescaDirecta - Pescado Fresco Directo del Pescador</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -31,12 +34,14 @@
         </div>
     </section>
 
-    <!-- FILTROS DE TIENDA -->
     <section class="products" id="productos">
         <h2>Productos disponibles</h2>
         
         <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
             <input type="text" id="search-input" placeholder="Buscar productos..." style="padding:10px; width:300px; border-radius:8px; border:2px solid #0077b6;">
+            <select id="category-filter" style="padding:10px; border-radius:8px; border:2px solid #0077b6; background:white;">
+                <option value="">Todas las categorías</option>
+            </select>
         </div>
 
         <div class="grid" id="products-grid">
@@ -105,6 +110,12 @@
             </div>
         </div>
     </div>
+
+    <!-- Botón flotante carrito -->
+    <!-- <div class="carrito-flotante" onclick="window.location.href='pago.html'">
+        🛒
+        <span class="carrito-badge" id="badgeCarrito">0</span>
+    </div> -->
 
     <script src="js/index.js" defer></script>
     <script src="js/sesion.js"></script>

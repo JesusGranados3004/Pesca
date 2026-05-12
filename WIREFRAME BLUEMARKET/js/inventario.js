@@ -68,9 +68,64 @@ function actualizarStats(productos) {
     document.getElementById('productosAgotados').textContent = agotados;
 }
 
-function editarProducto(id) { alert('Editar #' + id + ' (en desarrollo)'); }
-function eliminarProducto(id) { if(confirm('¿Eliminar?')) alert('Eliminar #' + id + ' (en desarrollo)'); }
-function verHistorial() { alert('Historial (en desarrollo)'); }
+function editarProducto(id) {
+
+    fetchSeguro('php/verificar_sesion.php')
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.logueado && data.tipo === 'vendedor') {
+
+                window.location.href =
+                    "editar_producto.html?id=" + id;
+
+            } else {
+
+                mostrarMensajeSesion();
+
+            }
+
+        })
+        .catch(err => {
+            console.error(err);
+            mostrarMensajeSesion();
+        });
+
+}
+
+function eliminarProducto(id) {
+
+    if (!confirm("¿Eliminar este producto?")) return;
+
+    fetchSeguro("php/producto.php?origen=eliminar_producto&id=" + id, {
+        method: "DELETE"
+    })
+    .then(res => res.text())
+    .then(respuesta => {
+
+        if (respuesta.trim() === "ok") {
+
+            alert("🗑️ Producto eliminado");
+
+            cargarMisProductos();
+
+        } else {
+
+            alert("❌ " + respuesta);
+
+        }
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error eliminando");
+    });
+
+}
+
+function verHistorial() {
+    window.location.href = "historial_ventas.html";
+}
 
 const buscarInput = document.getElementById('buscarProducto');
 if (buscarInput) {

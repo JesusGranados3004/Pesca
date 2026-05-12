@@ -119,7 +119,6 @@ function initFiltros() {
 async function agregarAlCarrito() {
     if(!productoActual) return;
 
-    // 🔒 VERIFICAR SESIÓN PRIMERO
     try {
         const res = await fetch('php/verificar_sesion.php');
         const sesion = await res.json();
@@ -216,7 +215,7 @@ function actualizarBadgeCarrito() {
 
 // === GLOBAL ===
 window.agregarAlCarrito = agregarAlCarrito;
-window.iniciarChatVendedor = iniciarChatVendedor;   // ✅ COMPLETADO
+window.iniciarChatVendedor = iniciarChatVendedor;
 
 // === INIT ===
 document.addEventListener('DOMContentLoaded', () => {
