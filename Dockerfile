@@ -1,16 +1,18 @@
 FROM php:8.2-apache
 
-# Instalar extensión mysqli para MySQL
+# Instalar mysqli
 RUN docker-php-ext-install mysqli
 
-# Permitir mod_rewrite
+# Activar rewrite
 RUN a2enmod rewrite
 
-# Copiar todos los archivos al servidor Apache
+# Copiar archivos
 COPY . /var/www/html/
 
-# Dar permisos
+# Cambiar raíz pública hacia tu carpeta
+RUN sed -i 's!/var/www/html!/var/www/html/WIREFRAME BLUEMARKET!g' /etc/apache2/sites-available/000-default.conf
+
+# Permisos
 RUN chown -R www-data:www-data /var/www/html
 
-# Puerto usado por Render
 EXPOSE 80
