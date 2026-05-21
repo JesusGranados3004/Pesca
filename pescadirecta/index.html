@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PescaDirecta - Pescado Fresco Directo del Pescador</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <div class="menu">
+           <a href="index.html" class="active">🏠 Inicio</a>
+           <a href="pago.html">🛒 Carrito</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Pescado fresco directo del pescador</h1>
+            <p>Compra pescado artesanal directamente de comunidades costeras y apoya la economía local. Frescura garantizada, trazabilidad completa.</p>
+            <a href="#productos" class="btn-primario">Explorar productos</a>
+        </div>
+        <div class="hero-img">
+            <img src="uploads/productos/pesca.jpg" alt="Pescador">
+        </div>
+    </section>
+
+    <section class="products" id="productos">
+        <h2>Productos disponibles</h2>
+        
+        <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+            <input type="text" id="search-input" placeholder="Buscar productos..." style="padding:10px; width:300px; border-radius:8px; border:2px solid #0077b6;">
+            <select id="category-filter" style="padding:10px; border-radius:8px; border:2px solid #0077b6; background:white;">
+                <option value="">Todas las categorías</option>
+            </select>
+        </div>
+
+        <div class="grid" id="products-grid">
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>¿Por qué usar la plataforma?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <div class="icon">🎣</div>
+                <h3>Venta directa</h3>
+                <p>Sin intermediarios. Del pescador a tu mesa.</p>
+            </div>
+            <div class="feature">
+                <div class="icon">📍</div>
+                <h3>Trazabilidad</h3>
+                <p>Conoce el origen exacto de tu pescado.</p>
+            </div>
+            <div class="feature">
+                <div class="icon">🤝</div>
+                <h3>Apoyo local</h3>
+                <p>Impulsa la economía de comunidades costeras.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 PescaDirecta - Plataforma de Comercialización de Pesca Artesanal</p>
+    </footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-contenido">
+            <span id="cerrarModal">&times;</span>
+            <div class="modal-imagen-container">
+                <img id="modalImagen" src="" alt="">
+            </div>
+            <h2 id="modalTitulo"></h2>
+            <p id="modalDescripcion"></p>
+            <div id="modalPrecio"></div>
+            <div class="modal-info">
+                <p><strong>🌍 Origen:</strong> <span id="modalOrigen"></span></p>
+                <p><strong>⚖️ Kilos disponibles:</strong> <span id="modalCantidad"></span></p>
+                <p><strong>👤 Pescador:</strong> <span id="modalPescador"></span></p>
+                <p><strong>📅 Fecha:</strong> <span id="modalFecha"></span></p>
+                <p><strong>🎣 Tipo:</strong> <span id="modalTipo"></span></p>
+            </div>
+            <div class="selector-cantidad" style="margin:15px 0;padding:15px;background:#f8f9fa;border-radius:10px;text-align:center;">
+                <label for="inputCantidad"><strong>⚖️ Cantidad que deseas (kg):</strong></label>
+                <input 
+                    type="number" 
+                    id="inputCantidad" 
+                    value="1" 
+                    min="0.5" 
+                    max="999" 
+                    step="0.1"
+                    placeholder="Ej: 2.5"
+                    style="display:block;width:150px;margin:10px auto;padding:10px;font-size:18px;text-align:center;border:2px solid #0077b6;border-radius:8px;"
+                >
+                <small id="stockInfo" style="color:#666;"></small>
+                <small id="errorCantidad" style="color:#e74c3c;display:none;"></small>
+            </div>
+            <div class="modal-botones">
+                <button class="btn-primario btn-carrito" onclick="agregarAlCarrito()">🛒 Agregar al carrito</button>
+                <button class="btn-chat" onclick="iniciarChatVendedor()">💬 Chat con vendedor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante carrito -->
+    <!-- <div class="carrito-flotante" onclick="window.location.href='pago.html'">
+        🛒
+        <span class="carrito-badge" id="badgeCarrito">0</span>
+    </div> -->
+
+    <script src="js/index.js" defer></script>
+    <script src="js/sesion.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Compras - PescaDirecta</title>
+    <link rel="stylesheet" href="css/mis_compras.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" style="text-decoration: none;">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <div class="menu">
+           <a href="index.html">🏠 Inicio</a>
+           <a href="index.html#productos">🔍 Productos</a>
+           <a href="mis_compras.html" class="active">📋 Mis Compras</a>
+           <a href="pago.html">🛒 Carrito</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 30px; color: #0077b6;">📋 Mis Compras</h1>
+        
+        <div id="comprasContainer">
+            <!-- Aquí se renderizan las compras -->
+        </div>
+        
+        <div id="sinCompras" style="display: none; text-align: center; padding: 60px;">
+            <i class="fas fa-shopping-bag" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+            <h2>Aún no has realizado compras</h2>
+            <p>Explora nuestros productos frescos y haz tu primera compra.</p>
+            <a href="index.html#productos" class="btn-primario">Ver productos</a>
+        </div>
+    </div>
+
+    <script src="js/sesion.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            verificarSesion()
+                .then(res => res.json())
+                .then(sesion => {
+                    if (!sesion.logueado || sesion.tipo !== 'consumidor') {
+                        alert('🔒 Acceso denegado. Debes iniciar sesión como comprador.');
+                        cerrarSesion();
+                        window.location.href = 'iniciarSesion.html';
+                        return;
+                    }
+                    cargarMisCompras();
+                })
+                .catch(() => {
+                    alert('🔒 Acceso denegado. Debes iniciar sesión como comprador.');
+                    window.location.href = 'iniciarSesion.html';
+                });
+        });
+    </script>
+    <script src="js/mis_compras.js"></script>
+</body>
+</html>
