@@ -4,7 +4,7 @@ let stockMaximo = 0;
 let todosLosProductos = [];
 
 // === CARGAR PRODUCTOS ===
-fetchSeguro("php/producto.php?origen=inicio")
+fetchSeguro("https://pesca-mcl1.onrender.com/conexion.php")
     .then(res => res.json())
     .then(data => {
         if (data.error) {
