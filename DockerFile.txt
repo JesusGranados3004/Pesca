@@ -1,0 +1,16 @@
+FROM php:8.2-apache
+
+# Instalar extensión mysqli para MySQL
+RUN docker-php-ext-install mysqli
+
+# Permitir mod_rewrite
+RUN a2enmod rewrite
+
+# Copiar todos los archivos al servidor Apache
+COPY . /var/www/html/
+
+# Dar permisos
+RUN chown -R www-data:www-data /var/www/html
+
+# Puerto usado por Render
+EXPOSE 80
