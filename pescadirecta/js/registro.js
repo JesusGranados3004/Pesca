@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             mostrarMensaje("Procesando...", "info");
 
-            fetch('php/registro.php', { method: 'POST', body: datos })
+            fetch('https://pesca-mcl1.onrender.com/php/registro.php', { method: 'POST', body: datos })
             .then(r => r.text())
             .then(texto => {
                 if (texto.trim() === 'ok') {

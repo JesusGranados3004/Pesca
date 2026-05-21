@@ -10,7 +10,7 @@ function mostrarLista() {
 }
 
 function cargarMisProductos() {
-    fetchSeguro('php/producto.php?origen=mis_productos')
+    fetchSeguro('https://pesca-mcl1.onrender.com/php/producto.php?origen=mis_productos')
         .then(res => res.json())  // ✅ Hacer .json() aquí
         .then(data => {
             if (data.error) {
@@ -70,7 +70,7 @@ function actualizarStats(productos) {
 
 function editarProducto(id) {
 
-    fetchSeguro('php/verificar_sesion.php')
+    fetchSeguro('https://pesca-mcl1.onrender.com/php/verificar_sesion.php')
         .then(res => res.json())
         .then(data => {
 
@@ -97,7 +97,7 @@ function eliminarProducto(id) {
 
     if (!confirm("¿Eliminar este producto?")) return;
 
-    fetchSeguro("php/producto.php?origen=eliminar_producto&id=" + id, {
+    fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=eliminar_producto&id=" + id, {
         method: "DELETE"
     })
     .then(res => res.text())
@@ -192,7 +192,7 @@ if (formProducto) {
         e.preventDefault();
         const formData = new FormData(this);
         
-        fetch('php/producto.php?origen=guardar_productos', {
+        fetch('https://pesca-mcl1.onrender.com/php/producto.php?origen=guardar_productos', {
             method: 'POST',
             body: formData
         })

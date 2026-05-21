@@ -1,5 +1,5 @@
 function cargarMisCompras() {
-    fetchSeguro('php/mis_compras.php')
+    fetchSeguro('https://pesca-mcl1.onrender.com/php/mis_compras.php')
         .then(res => res.json())
         .then(data => {
             if (data.error) {

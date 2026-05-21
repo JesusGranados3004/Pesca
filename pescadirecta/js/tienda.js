@@ -135,7 +135,7 @@ function procederPago() {
     }
 
     // Verificar sesión
-    fetch('php/verificar_sesion.php')
+    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php')
         .then(r => r.json())
         .then(sesion => {
             if (!sesion.logueado) {
@@ -155,7 +155,7 @@ function procederPago() {
             }
             
             // 🔄 PROCESAR VENTA Y ACTUALIZAR INVENTARIO
-            return fetch('php/procesar_venta.php', {
+            return fetch('https://pesca-mcl1.onrender.com/php/procesar_venta.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: carrito })

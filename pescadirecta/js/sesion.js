@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar sesión SIN usar caché del navegador
-    fetch('php/verificar_sesion.php', {
+    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php', {
         cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' }
     })
@@ -52,7 +52,7 @@ function cerrarSesion(e) {
     e.preventDefault();
     if (!confirm('¿Cerrar sesión?')) return;
     
-    fetch('php/logout.php', { cache: 'no-store' })
+    fetch('https://pesca-mcl1.onrender.com/php/logout.php', { cache: 'no-store' })
     .then(() => {
         localStorage.clear();
         // Redirigir con parámetro único para evitar caché
@@ -92,7 +92,7 @@ function fetchSeguro(url, opciones = {}) {
 
 // === VERIFICAR SESIÓN DIRECTA ===
 function verificarSesion() {
-    return fetchSeguro('php/verificar_sesion.php');
+    return fetchSeguro('https://pesca-mcl1.onrender.com/php/verificar_sesion.php');
 }
 
 // === MENSAJE DE SESIÓN ===
