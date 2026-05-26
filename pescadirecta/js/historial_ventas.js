@@ -7,9 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // SOLO vendedores
             if (!sesion.logueado || sesion.tipo !== 'vendedor') {
 
-                alert("⛔ Acceso solo para vendedores");
-
-                window.location.href = "iniciarSesion.html";
+                mostrarToast(
+                    "⛔ Acceso solo para vendedores",
+                    "error",
+                    () => {
+                        window.location.href = "index.html";
+                    }
+                );
 
                 return;
             }
@@ -19,17 +23,73 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => {
 
-            alert("❌ Error verificando sesión");
-
-            window.location.href = "iniciarSesion.html";
+            mostrarToast(
+                "❌ Error verificando sesión",
+                "error",
+                () => {
+                    window.location.href = "iniciarSesion.html";
+                }
+            );
 
         });
 
 });
 
+function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
+
+    const iconos = {
+        error: '❌',
+        exito: '✅',
+        aviso: '⚠️',
+        info: 'ℹ️'
+    };
+
+    let container = document.getElementById('toast-container');
+
+    if (!container) {
+
+        container = document.createElement('div');
+        container.id = 'toast-container';
+
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+
+    toast.className = `toast ${tipo}`;
+
+    toast.innerHTML = `
+        <span class="toast-icon">${iconos[tipo] || iconos.info}</span>
+        <span>${mensaje}</span>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('mostrar');
+    });
+
+    setTimeout(() => {
+
+        toast.classList.remove('mostrar');
+        toast.classList.add('ocultar');
+
+        setTimeout(() => {
+
+            toast.remove();
+
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+
+        }, 400);
+
+    }, 3000);
+}
+
 function cargarHistorial() {
 
-    fetchSeguro('https://pesca-mcl1.onrender.com/php/historial_ventas.php')
+    fetchSeguro('php/historial_ventas.php')
 
         .then(res => res.json())
 
@@ -43,7 +103,10 @@ function cargarHistorial() {
 
             console.error(err);
 
-            alert("Error cargando historial");
+            mostrarToast(
+                "Error cargando historial",
+                "error"
+            );
 
         });
 
@@ -64,6 +127,11 @@ function renderVentas(ventas) {
                 </td>
             </tr>
         `;
+
+        mostrarToast(
+            "Todavía no tienes ventas registradas",
+            "aviso"
+        );
 
         return;
     }

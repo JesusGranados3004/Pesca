@@ -1,5 +1,8 @@
 <?php
 header("Content-Type: application/json");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 include("conexion.php");
 session_start();
 
@@ -7,7 +10,6 @@ $origen = $_GET['origen'] ?? 'inicio';
 $productos = [];
 
 switch ($origen) {
-    
     case 'inicio':
         $sql = "SELECT 
             p.id, p.nombre, p.descripcion, p.precio, p.origen,
@@ -116,7 +118,7 @@ switch ($origen) {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'vendedor') {
             http_response_code(401);
             echo json_encode(["error" => "No autorizado"]);
-            exit;  // ← Asegurar exit
+            exit;
         }
 
         $id = intval($_GET['id']);
@@ -131,132 +133,138 @@ switch ($origen) {
         if ($resultado->num_rows === 0) {
             echo json_encode(["error" => "Producto no encontrado"]);
             $stmt->close();
-            exit;  // ← Asegurar exit
+            exit;
         }
 
         $producto = $resultado->fetch_assoc();
         echo json_encode($producto);
         $stmt->close();
-        exit;  // ← ASEGURAR EXIT AQUÍ
+        exit;
 
         break;
 
     case 'editar_producto':
 
-        header('Content-Type: text/plain');
+    header('Content-Type: text/plain');
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 
-        if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'vendedor') {
-            http_response_code(401);
-            exit("No autorizado");
+    if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'vendedor') {
+        http_response_code(401);
+        exit("No autorizado");
+    }
+
+    $id = intval($_POST['id']);
+    $vendedor_id = $_SESSION['user_id'];
+    $modo = $_POST['modo'] ?? 'correccion';
+
+    $sqlImg = "SELECT * FROM productos WHERE id = ? AND vendedor_id = ?";
+    $stmtImg = $conexion->prepare($sqlImg);
+    $stmtImg->bind_param("ii", $id, $vendedor_id);
+    $stmtImg->execute();
+    $resImg = $stmtImg->get_result();
+
+    if ($resImg->num_rows === 0) {
+        exit("Producto no encontrado");
+    }
+
+    $productoActual = $resImg->fetch_assoc();
+    $imagenPath = $productoActual['imagen'];
+    $stmtImg->close();
+
+    $hayNuevaImagen = false;
+    
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
+        
+        $permitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+        if (!in_array($_FILES['imagen']['type'], $permitidos)) {
+            exit("Solo JPG PNG WEBP");
+        }
+        
+        if ($_FILES['imagen']['size'] > 5 * 1024 * 1024) {
+            exit("La imagen no puede superar 5MB");
         }
 
-        $id = intval($_POST['id']);
-
-        $nombre = $_POST['nombre'];
-        $descripcion = $_POST['descripcion'];
-        $precio = floatval($_POST['precio']);
-        $cantidad = floatval($_POST['cantidad']);
-
-        $vendedor_id = $_SESSION['user_id'];
-
-        // =========================
-        // OBTENER IMAGEN ACTUAL
-        // =========================
-
-        $sqlImg = "SELECT imagen FROM productos
-                WHERE id = ?
-                AND vendedor_id = ?";
-
-        $stmtImg = $conexion->prepare($sqlImg);
-
-        $stmtImg->bind_param("ii", $id, $vendedor_id);
-
-        $stmtImg->execute();
-
-        $resImg = $stmtImg->get_result();
-
-        if ($resImg->num_rows === 0) {
-            exit("Producto no encontrado");
+        $uploadDir = '../uploads/productos/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
         }
 
-        $producto = $resImg->fetch_assoc();
+        $ext = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
+        $nombreArchivo = uniqid('prod_') . '_' . time() . '.' . $ext;
+        $rutaCompleta = $uploadDir . $nombreArchivo;
 
-        $imagenPath = $producto['imagen'];
-
-        // =========================
-        // NUEVA IMAGEN
-        // =========================
-
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
-
-            $permitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-
-            if (!in_array($_FILES['imagen']['type'], $permitidos)) {
-                exit("Solo JPG PNG WEBP");
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaCompleta)) {
+            
+            if (!empty($productoActual['imagen']) && $productoActual['imagen'] !== 'img/default-producto.svg') {
+                $rutaAnterior = '../' . $productoActual['imagen'];
+                if (file_exists($rutaAnterior)) {
+                    unlink($rutaAnterior);
+                }
             }
-
-            $uploadDir = '../uploads/productos/';
-
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $ext = strtolower(pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION));
-
-            $nombreArchivo = uniqid('prod_') . '_' . time() . '.' . $ext;
-
-            $rutaCompleta = $uploadDir . $nombreArchivo;
-
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaCompleta)) {
-
-                $imagenPath = 'uploads/productos/' . $nombreArchivo;
-
-            } else {
-
-                exit("Error subiendo imagen");
-
-            }
+            
+            $imagenPath = 'uploads/productos/' . $nombreArchivo;
+            $hayNuevaImagen = true;
+            
+        } else {
+            exit("Error subiendo imagen");
         }
+    }
 
-        // =========================
-        // UPDATE
-        // =========================
+    
+    if ($modo === 'stock' && !$hayNuevaImagen) {
+        exit("Debes subir una foto del nuevo stock");
+    }
 
-        $sql = "UPDATE productos SET
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'] ?? '';
+    $precio = floatval($_POST['precio']);
+    $cantidad = floatval($_POST['cantidad']);
+    $origen = $_POST['origen'] ?? '';
+    $pescador_responsable = $_POST['pescador_responsable'] ?? '';
+    $fecha = $_POST['fecha'] ?? '';
+    $tipo_pesca = $_POST['tipo_pesca'] ?? '';
+    $disponibilidad = intval($_POST['disponibilidad']);
 
-                nombre = ?,
-                descripcion = ?,
-                precio = ?,
-                cantidad = ?,
-                imagen = ?
+    $sql = "UPDATE productos SET
+            nombre = ?,
+            descripcion = ?,
+            precio = ?,
+            cantidad = ?,
+            origen = ?,
+            pescador_responsable = ?,
+            fecha = ?,
+            tipo_pesca = ?,
+            disponibilidad = ?,
+            imagen = ?
+            WHERE id = ?
+            AND vendedor_id = ?";
 
-                WHERE id = ?
-                AND vendedor_id = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param(
+        "ssdsssssisii",
+        $nombre,
+        $descripcion,
+        $precio,
+        $cantidad,
+        $origen,
+        $pescador_responsable,
+        $fecha,
+        $tipo_pesca,
+        $disponibilidad,
+        $imagenPath,
+        $id,
+        $vendedor_id
+    );
 
-        $stmt = $conexion->prepare($sql);
-
-        $stmt->bind_param(
-
-            "ssddsii",
-
-            $nombre,
-            $descripcion,
-            $precio,
-            $cantidad,
-            $imagenPath,
-            $id,
-            $vendedor_id
-
-        );
-
-          if ($stmt->execute()) {
-                echo "ok";
-            } else {
-                echo "Error SQL";
-            }
-            $stmt->close();
-            exit;  
-            break;
+    if ($stmt->execute()) {
+        echo "ok";
+    } else {
+        echo "Error SQL: " . $stmt->error;
+    }
+    $stmt->close();
+    exit;
 
     case 'eliminar_producto':
 

@@ -10,15 +10,17 @@ function mostrarLista() {
 }
 
 function cargarMisProductos() {
-    fetchSeguro('https://pesca-mcl1.onrender.com/php/producto.php?origen=mis_productos')
-        .then(res => res.json())  // ✅ Hacer .json() aquí
+    fetchSeguro('php/producto.php?origen=mis_productos&t=' + Date.now(), {
+        cache: 'no-store'
+    })
+        .then(res => res.json())
         .then(data => {
             if (data.error) {
                 if (data.redirect) {
                     window.location.href = data.redirect;
                     return;
                 }
-                alert('Error: ' + data.error);
+                mostrarToast('Error: ' + data.error, 'error');
                 return;
             }
             renderMisProductos(data);
@@ -70,26 +72,57 @@ function actualizarStats(productos) {
 
 function editarProducto(id) {
 
-    fetchSeguro('https://pesca-mcl1.onrender.com/php/verificar_sesion.php')
-        .then(res => res.json())
-        .then(data => {
+   fetchSeguro('php/verificar_sesion.php')
+    .then(res => res.json())
+    .then(data => {
 
-            if (data.logueado && data.tipo === 'vendedor') {
+        if (!data.logueado) {
 
-                window.location.href =
-                    "editar_producto.html?id=" + id;
+            mostrarToast(
+                "Debes iniciar sesión para editar productos",
+                "error"
+            );
 
-            } else {
+            setTimeout(() => {
+                window.location.href = "iniciarSesion.html";
+            }, 1500);
 
-                mostrarMensajeSesion();
+            return;
+        }
 
-            }
+        if (data.tipo !== 'vendedor') {
 
-        })
-        .catch(err => {
-            console.error(err);
-            mostrarMensajeSesion();
-        });
+            mostrarToast(
+                "Solo los vendedores pueden editar productos",
+                "aviso"
+            );
+
+            return;
+        }
+
+        mostrarToast(
+            "Abriendo editor de producto...",
+            "info"
+        );
+
+        setTimeout(() => {
+
+            window.location.href =
+                "editar_producto.html?id=" + id;
+
+        }, 600);
+
+    })
+    .catch(err => {
+
+        console.error(err);
+
+        mostrarToast(
+            "Error verificando la sesión",
+            "error"
+        );
+
+    });
 
 }
 
@@ -97,7 +130,7 @@ function eliminarProducto(id) {
 
     if (!confirm("¿Eliminar este producto?")) return;
 
-    fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=eliminar_producto&id=" + id, {
+    fetchSeguro("php/producto.php?origen=eliminar_producto&id=" + id, {
         method: "DELETE"
     })
     .then(res => res.text())
@@ -105,20 +138,20 @@ function eliminarProducto(id) {
 
         if (respuesta.trim() === "ok") {
 
-            alert("🗑️ Producto eliminado");
+            mostrarToast("🗑️ Producto eliminado", "exito");
 
             cargarMisProductos();
 
         } else {
 
-            alert("❌ " + respuesta);
+            mostrarToast("❌ " + respuesta, "error");
 
         }
 
     })
     .catch(err => {
         console.error(err);
-        alert("Error eliminando");
+        mostrarToast("❌ Error eliminando el producto", "error");
     });
 
 }
@@ -163,8 +196,8 @@ if (fileInput) fileInput.addEventListener('change', handleFiles);
 function handleFiles(e) {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) { alert('Solo imágenes'); fileInput.value = ''; return; }
-    if (file.size > 5 * 1024 * 1024) { alert('Máximo 5MB'); fileInput.value = ''; return; }
+    if (!file.type.startsWith('image/')) { mostrarToast('Solo imágenes', 'aviso'); fileInput.value = ''; return; }
+    if (file.size > 5 * 1024 * 1024) { mostrarToast('Máximo 5MB', 'aviso'); fileInput.value = ''; return; }
     
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -192,28 +225,96 @@ if (formProducto) {
         e.preventDefault();
         const formData = new FormData(this);
         
-        fetch('https://pesca-mcl1.onrender.com/php/producto.php?origen=guardar_productos', {
+        fetch('php/producto.php?origen=guardar_productos', {
             method: 'POST',
             body: formData
         })
         .then(r => r.text())
         .then(respuesta => {
             if (respuesta.includes('No autorizado') || respuesta.includes('vendedor')) {
-                alert('Sesión expirada. Redirigiendo...');
+                mostrarToast('Sesión expirada. Redirigiendo...', 'aviso');
                 window.location.href = 'iniciarSesion.html';
                 return;
             }
             if (respuesta.trim() === 'ok') {
-                alert('✅ Producto guardado');
+                mostrarToast('✅ Producto guardado', 'exito');
                 this.reset();
                 fileInput.value = ''; previewImage.src = ''; previewContainer.style.display = 'none';
                 dropZone.querySelector('.drop-zone__icon').style.display = 'block';
                 dropZone.querySelector('.drop-zone__text').style.display = 'block';
                 mostrarLista();
             } else {
-                alert('❌ Error: ' + respuesta);
+                mostrarToast('❌ Error: ' + respuesta, 'error');
             }
         })
-        .catch(err => alert('❌ Error: ' + err));
+        .catch(err => mostrarToast('❌ Error: ' + err, 'error'));
     });
+}
+
+function mostrarToast(
+    mensaje,
+    tipo = 'info',
+    duracion = 3000,
+    onComplete = null
+) {
+
+    const iconos = {
+        error: '❌',
+        exito: '✅',
+        aviso: '⚠️',
+        info: 'ℹ️'
+    };
+
+    let container =
+        document.getElementById('toast-container');
+
+    if (!container) {
+
+        container = document.createElement('div');
+
+        container.id = 'toast-container';
+
+        document.body.appendChild(container);
+    }
+
+    // ELIMINAR TOASTS ANTERIORES
+    container.innerHTML = '';
+
+    const toast =
+        document.createElement('div');
+
+    toast.className =
+        `toast ${tipo}`;
+
+    toast.innerHTML = `
+        <span class="toast-icon">
+            ${iconos[tipo] || iconos.info}
+        </span>
+
+        <span>${mensaje}</span>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('mostrar');
+    });
+
+    setTimeout(() => {
+
+        toast.classList.remove('mostrar');
+
+        toast.classList.add('ocultar');
+
+        setTimeout(() => {
+
+            toast.remove();
+
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+
+        }, 400);
+
+    }, duracion);
 }

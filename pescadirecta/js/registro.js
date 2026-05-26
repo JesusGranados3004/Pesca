@@ -20,47 +20,98 @@ document.addEventListener('DOMContentLoaded', function() {
     configurarFormulario(formConsumidor);
     configurarFormulario(formVendedor);
 
-    function configurarFormulario(form) {
+   function configurarFormulario(form) {
+
         if (!form) return;
 
         form.addEventListener('submit', function(e) {
+
             e.preventDefault();
             e.stopPropagation();
 
             const datos = new FormData(this);
-            const pass = datos.get("password");
-            const passConfirm = datos.get("password_confirm");
 
+            const pass =
+                datos.get("password");
+
+            const passConfirm =
+                datos.get("password_confirm");
+
+            // VALIDAR CONTRASEÑAS
             if (pass !== passConfirm) {
-                mostrarMensaje("Las contraseñas no coinciden", "error");
+
+                mostrarToast(
+                    "Las contraseñas no coinciden",
+                    "error"
+                );
+
                 return;
             }
 
+            // VALIDAR LONGITUD
             if (pass.length < 6) {
-                mostrarMensaje("Mínimo 6 caracteres", "error");
+
+                mostrarToast(
+                    "La contraseña debe tener mínimo 6 caracteres",
+                    "aviso"
+                );
+
                 return;
             }
 
-            mostrarMensaje("Procesando...", "info");
+            // PROCESANDO
+            mostrarToast(
+                "Procesando registro...",
+                "info"
+            );
 
-            fetch('https://pesca-mcl1.onrender.com/php/registro.php', { method: 'POST', body: datos })
-            .then(r => r.text())
-            .then(texto => {
-                if (texto.trim() === 'ok') {
-                    mostrarMensaje("¡Registro exitoso!", "exito");
-                    this.reset();
-                    setTimeout(() => location.href = 'iniciarSesion.html', 1500);
-                } else {
-                    mostrarMensaje("Error: " + texto, "error");
-                }
+            fetch('php/registro.php', {
+                method: 'POST',
+                body: datos
             })
-            .catch(() => mostrarMensaje("Error de conexión", "error"));
+
+            .then(r => r.text())
+
+            .then(texto => {
+
+                if (texto.trim() === 'ok') {
+
+                    mostrarToast(
+                        "¡Registro exitoso!",
+                        "exito"
+                    );
+
+                    this.reset();
+
+                    setTimeout(() => {
+
+                        location.href =
+                            'iniciarSesion.html';
+
+                    }, 1500);
+
+                } else {
+
+                    mostrarToast(
+                        "Error: " + texto,
+                        "error"
+                    );
+
+                }
+
+            })
+
+            .catch(() => {
+
+                mostrarToast(
+                    "Error de conexión",
+                    "error"
+                );
+
+            });
+
         });
+
     }
 
-    function mostrarMensaje(texto, tipo) {
-        if (!mensajeDiv) return;
-        mensajeDiv.textContent = texto;
-        mensajeDiv.className = "mensaje " + tipo + " visible";
-    }
 });

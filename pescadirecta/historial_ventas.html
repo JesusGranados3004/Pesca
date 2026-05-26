@@ -4,55 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Ventas - PescaDirecta</title>
-
     <link rel="stylesheet" href="css/inventario.css">
-
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 </head>
 <body>
 
-<header class="inventario-header">
-    <a href="index.html" style="text-decoration:none;">
-        <div class="logo">🐟 PescaDirecta</div>
-    </a>
+    <header class="inventario-header">
+        <a href="index.html" class="logo-link">
+            <div class="logo">🐟 PescaDirecta</div>
+        </a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav id="menuNav">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="inventario.html">📦 Inventario</a>
+            <a href="historial_ventas.html" class="activo">📊 Historial</a>
+        </nav>
+    </header>
 
-    <nav>
-        <a href="index.html">🏠 Inicio</a>
-        <a href="inventario.html">📦 Inventario</a>
-        <a href="historial_ventas.html" class="activo">📊 Historial</a>
-    </nav>
-</header>
-
-<div class="container">
-
-    <div class="seccion">
-        <h2>📊 Historial de Ventas</h2>
-
-        <div class="tabla-contenedor">
-            <table id="tablaVentas">
-                <thead>
-                    <tr>
-                        <th>PRODUCTO</th>
-                        <th>CLIENTE</th>
-                        <th>CANTIDAD</th>
-                        <th>TOTAL</th>
-                        <th>FECHA</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="seccion">
+            <h2>📊 Historial de Ventas</h2>
+            <div class="tabla-contenedor">
+                <table id="tablaVentas">
+                    <thead>
+                        <tr>
+                            <th>PRODUCTO</th>
+                            <th>CLIENTE</th>
+                            <th>CANTIDAD</th>
+                            <th>TOTAL</th>
+                            <th>FECHA</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-</div>
-
-<script src="js/sesion.js"></script>
-<script src="js/historial_ventas.js"></script>
-
+    <script src="js/sesion.js"></script>
+    <script src="js/historial_ventas.js"></script>
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuNav').classList.toggle('activo');
+        }
+    </script>
 </body>
 </html>

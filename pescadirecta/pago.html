@@ -64,6 +64,38 @@
         </div>
     </div>
 
+    <div id="modalPago" class="modal-pago" aria-hidden="true">
+        <div class="modal-pago-contenido">
+            <button class="modal-pago-cerrar" type="button" onclick="cerrarModalPago()">×</button>
+            <h2>💳 Datos de pago</h2>
+            <p>Ingresa los datos de tu tarjeta para simular el pago.</p>
+            <form id="formPago" class="modal-pago-form" onsubmit="enviarPago(event)">
+                <label>
+                    Nombre en tarjeta
+                    <input id="tarjetaNombre" type="text" placeholder="Nombre completo" required>
+                </label>
+                <label>
+                    Número de tarjeta
+                    <input id="tarjetaNumero" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" required>
+                </label>
+                <div class="modal-row">
+                    <label>
+                        Expiración
+                        <input id="tarjetaExpiracion" type="text" maxlength="5" placeholder="MM/AA" required>
+                    </label>
+                    <label>
+                        CVV
+                        <input id="tarjetaCvv" type="text" inputmode="numeric" maxlength="4" placeholder="123" required>
+                    </label>
+                </div>
+                <div class="modal-pago-status" id="pagoStatus">Total a pagar: <strong id="modalTotalPago">$0.00</strong></div>
+                <button class="btn-pagar" id="btnConfirmarPago" type="submit">
+                    <i class="fas fa-paper-plane"></i> Pagar ahora
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script src="js/tienda.js"></script>
     <script src="js/sesion.js"></script>
     <script>

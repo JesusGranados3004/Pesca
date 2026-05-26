@@ -9,11 +9,12 @@
 <body>
 
     <header class="auth-header">
-        <a href="index.html" style="text-decoration: none;">
+        <a href="index.html" class="logo-link">
             <div class="logo">🐟 PescaDirecta</div>
         </a>
-        <nav>
-             <a href="index.html">Inicio</a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav id="menuNav">
+            <a href="index.html">Inicio</a>
         </nav>
     </header>
 
@@ -37,5 +38,10 @@
 
     <script src="js/auth.js"></script>
     <script src="js/sesion.js"></script>
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuNav').classList.toggle('activo');
+        }
+    </script>
 </body>
 </html>

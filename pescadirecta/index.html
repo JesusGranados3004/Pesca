@@ -119,5 +119,26 @@
 
     <script src="js/index.js" defer></script>
     <script src="js/sesion.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const toastGuardado =
+                sessionStorage.getItem('toastBienvenida');
+
+            if (toastGuardado) {
+
+                const datos = JSON.parse(toastGuardado);
+
+                if (datos.tipo === 'consumidor') {
+                    mostrarToast(datos.mensaje, datos.toastTipo || 'exito');
+                }
+
+                sessionStorage.removeItem('toastBienvenida');
+            }
+
+        });
+
+    </script>
 </body>
 </html>

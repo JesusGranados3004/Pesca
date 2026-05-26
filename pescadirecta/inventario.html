@@ -12,10 +12,11 @@
 <body>
 
     <header class="inventario-header">
-        <a href="index.html" style="text-decoration: none;">
+        <a href="index.html" class="logo-link">
             <div class="logo">🐟 PescaDirecta</div>
         </a>
-        <nav>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav id="menuNav">
             <a href="index.html">🏠 Inicio</a>
             <a href="inventario.html" class="activo">📦 Mi Inventario</a>
         </nav>
@@ -69,9 +70,7 @@
                                 <th>ACCIONES</th>
                             </tr>
                         </thead>
-                        <tbody>
-                           
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -139,16 +138,46 @@
                 .then(res => res.json())
                 .then(sesion => {
                     if (!sesion.logueado || sesion.tipo !== 'vendedor') {
-                        alert('Acceso denegado. Solo vendedores pueden acceder a esta sección.');
-                        window.location.href = 'iniciarSesion.html';
+                        mostrarToast('Acceso denegado. Solo vendedores pueden acceder a esta sección.', 'aviso', 3000);
+                        setTimeout(() => {
+                            window.location.href =
+                                'iniciarSesion.html';
+
+                        }, 1800);
                         return;
                     }
                     cargarMisProductos();
                 })
                 .catch(() => {
-                    alert('Error al verificar sesión. Por favor, inicia sesión nuevamente.');
-                    window.location.href = 'iniciarSesion.html';
+                    mostrarToast('Error al verificar sesión. Por favor, inicia sesión nuevamente.', 'error');
+                    setTimeout(() => {
+                            window.location.href =
+                                'iniciarSesion.html';
+
+                    }, 1800);
                 });
+        });
+        
+        function toggleMenu() {
+            document.getElementById('menuNav').classList.toggle('activo');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const toastGuardado =
+                sessionStorage.getItem('toastBienvenida');
+
+            if (toastGuardado) {
+
+                const datos = JSON.parse(toastGuardado);
+
+                if (datos.tipo === 'vendedor') {
+                    mostrarToast(datos.mensaje, datos.toastTipo || 'exito');
+                }
+
+                sessionStorage.removeItem('toastBienvenida');
+            }
+
         });
     </script>
     <script src="js/inventario.js"></script>

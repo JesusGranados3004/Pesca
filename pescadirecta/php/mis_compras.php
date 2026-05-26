@@ -3,7 +3,6 @@ header("Content-Type: application/json");
 include("conexion.php");
 session_start();
 
-// Verificar sesión
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'consumidor') {
     http_response_code(401);
     echo json_encode(["error" => "No autorizado", "redirect" => "iniciarSesion.html"]);
@@ -41,7 +40,6 @@ $compras = [];
 while ($fila = $resultado->fetch_assoc()) {
     $compra_id = $fila['compra_id'];
     
-    // Agrupar por compra
     if (!isset($compras[$compra_id])) {
         $compras[$compra_id] = [
             'id' => $compra_id,
@@ -64,7 +62,6 @@ while ($fila = $resultado->fetch_assoc()) {
     ];
 }
 
-// Reindexar como array numérico
 echo json_encode(array_values($compras));
 
 $stmt->close();

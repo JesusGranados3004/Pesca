@@ -1,9 +1,9 @@
 function cargarMisCompras() {
-    fetchSeguro('https://pesca-mcl1.onrender.com/php/mis_compras.php')
+    fetchSeguro('php/mis_compras.php')
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                alert('Error: ' + data.error);
+                mostrarToast('Error: ' + data.error, 'error');
                 return;
             }
             renderCompras(data);
@@ -81,4 +81,50 @@ function formatearTelefono(telefono) {
     let t = telefono.replace(/\D/g, '');
     if (t.startsWith('3') && t.length === 10) t = '57' + t;
     return t;
+}
+
+function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
+
+    const iconos = {
+        error: '❌',
+        exito: '✅',
+        aviso: '⚠️',
+        info: 'ℹ️'
+    };
+
+    let container = document.getElementById('toast-container');
+
+    if (!container) {
+
+        container = document.createElement('div');
+        container.id = 'toast-container';
+
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+
+    toast.className = `toast ${tipo}`;
+
+    toast.innerHTML = `
+        <span class="toast-icon">${iconos[tipo] || iconos.info}</span>
+        <span>${mensaje}</span>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('mostrar');
+    });
+
+    setTimeout(() => {
+
+        toast.classList.remove('mostrar');
+        toast.classList.add('ocultar');
+
+        setTimeout(() => {
+            toast.remove();
+        }, 400);
+
+    }, duracion);
 }

@@ -2,57 +2,139 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Editar Producto</title>
     <link rel="stylesheet" href="css/editar_producto.css">
 </head>
 <body>
 
-    <h1>✏️ Editar Producto</h1>
+    <div class="contenedor">
 
-    <!-- Botón volver -->
-    <div style="max-width: 600px; margin: 0 auto 15px;">
-        <a href="inventario.html" style="text-decoration: none; color: #0077b6; font-weight: bold;">
-            ← Volver al inventario
-        </a>
-    </div>
-
-    <form id="formEditarProducto" enctype="multipart/form-data">
-
-        <input type="hidden" id="producto_id" name="id">
-
-        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-
-        <textarea id="descripcion" name="descripcion" placeholder="Descripción"></textarea>
-
-        <input type="number" step="0.01" id="precio" name="precio" placeholder="Precio" required>
-
-        <input type="text" id="origen" name="origen" placeholder="Origen">
-
-        <input type="text" id="pescador_responsable" name="pescador_responsable" placeholder="Pescador">
-
-        <input type="number" step="0.01" id="cantidad" name="cantidad" placeholder="Cantidad">
-
-        <input type="date" id="fecha" name="fecha">
-
-        <input type="text" id="tipo_pesca" name="tipo_pesca" placeholder="Tipo de pesca">
-
-        <select id="disponibilidad" name="disponibilidad">
-            <option value="1">Disponible</option>
-            <option value="0">No disponible</option>
-        </select>
-
-        <!-- Imagen actual -->
-        <div style="text-align: center;">
-            <p style="margin-bottom: 8px; color: #666; font-size: 14px;">Imagen actual:</p>
-            <img id="imagenActual" src="" alt="Imagen del producto" 
-                 style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 1px solid #ddd; display: none;">
+        <!-- Header -->
+        <div class="header-editar">
+            <a href="inventario.html" class="btn-volver">← Volver</a>
+            <h1>✏️ Editar Producto</h1>
         </div>
 
-        <input type="file" name="imagen">
+        <!-- Selector de modo -->
+        <div class="selector-modo">
+            <p class="titulo-modo">¿Qué deseas hacer?</p>
+            <div class="opciones-modo">
+                <label class="opcion-modo activa">
+                    <input type="radio" name="modo_edicion" value="correccion" checked onchange="cambiarModo(this.value)">
+                    <span class="icono">📝</span>
+                    <span class="texto-opcion">Corrección</span>
+                    <span class="desc-opcion">Editar datos del producto</span>
+                </label>
+                <label class="opcion-modo">
+                    <input type="radio" name="modo_edicion" value="stock" onchange="cambiarModo(this.value)">
+                    <span class="icono">📦</span>
+                    <span class="texto-opcion">Agregar Stock</span>
+                    <span class="desc-opcion">Añadir kilos + foto obligatoria</span>
+                </label>
+            </div>
+        </div>
 
-        <button type="submit">💾 Guardar Cambios</button>
+        <form id="formEditarProducto" enctype="multipart/form-data">
 
-    </form>
+            <input type="hidden" id="producto_id" name="id">
+            <input type="hidden" id="modo" name="modo" value="correccion">
+
+            <!-- Grid de campos -->
+            <div class="grid-campos" id="camposCorreccion">
+
+                <div class="campo">
+                    <label for="nombre">Nombre del producto</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Mojarra" required>
+                </div>
+
+                <div class="campo campo-full">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Describe el producto..." rows="3"></textarea>
+                </div>
+
+                <div class="campo">
+                    <label for="precio">Precio ($)</label>
+                    <input type="number" step="0.01" id="precio" name="precio" placeholder="0.00" required>
+                </div>
+
+                <div class="campo">
+                    <label for="origen">Origen</label>
+                    <input type="text" id="origen" name="origen" placeholder="Ej: Santa Marta">
+                </div>
+
+                <div class="campo">
+                    <label for="pescador_responsable">Pescador responsable</label>
+                    <input type="text" id="pescador_responsable" name="pescador_responsable" placeholder="Nombre del pescador">
+                </div>
+
+                <!-- <div class="campo">
+                    <label for="fecha">Fecha de captura</label>
+                    <input type="date" id="fecha" name="fecha">
+                </div> -->
+
+                <div class="campo">
+                    <label for="tipo_pesca">Tipo de pesca</label>
+                    <input type="text" id="tipo_pesca" name="tipo_pesca" placeholder="Ej: Artesanal">
+                </div>
+
+                <div class="campo">
+                    <label for="disponibilidad">Estado</label>
+                    <select id="disponibilidad" name="disponibilidad">
+                        <option value="1">✅ Disponible</option>
+                        <option value="0">❌ No disponible</option>
+                    </select>
+                </div>
+
+            </div>
+
+                        <!-- Cantidad -->
+            <div class="campo cantidad-destacada" id="campoCantidad">
+                <label for="cantidad" id="labelCantidad">Cantidad (kg)</label>
+                <input type="number" step="0.01" id="cantidad" name="cantidad" placeholder="0.00" required>
+                <small id="hintCantidad">Edita la cantidad total disponible</small>
+            </div>
+
+            <!-- Fecha de captura (SIEMPRE VISIBLE) -->
+            <div class="campo fecha-captura" id="campoFecha">
+                <label for="fecha">
+                    Fecha de captura
+                    <span class="requerido-fecha" id="requeridoFecha" style="display: none; color: #e74c3c;"> *</span>
+                </label>
+                <input type="date" id="fecha" name="fecha" required>
+                <small id="hintFecha">Fecha en que se pescó el producto</small>
+            </div>
+
+            <!-- Imagen actual -->
+            <div class="seccion-imagen">
+                <p class="titulo-seccion">Imagen actual</p>
+                <div class="imagen-actual">
+                    <img id="imagenActual" src="" alt="Imagen del producto">
+                </div>
+            </div>
+
+            <!-- Nueva imagen -->
+            <div class="seccion-imagen nueva">
+                <p class="titulo-seccion">
+                    Nueva imagen
+                    <span class="requerido" id="requeridoImagen">* Obligatoria</span>
+                </p>
+                <div class="zona-subida">
+                    <input type="file" name="imagen" id="inputImagen" accept="image/*">
+                    <small id="hintImagen">Deja vacío para mantener la imagen actual</small>
+                </div>
+            </div>
+
+            <!-- Botón guardar -->
+            <div class="acciones-form">
+                <button type="submit" id="btnGuardar" class="btn-guardar">💾 Guardar Cambios</button>
+            </div>
+
+        </form>
+
+    </div>
 
     <script src="js/sesion.js"></script>
     <script src="js/editar_producto.js"></script>

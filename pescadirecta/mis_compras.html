@@ -13,52 +13,92 @@
 <body>
 
     <nav>
-        <a href="index.html" style="text-decoration: none;">
+        <a href="index.html" class="logo-link">
             <div class="logo">🐟 PescaDirecta</div>
         </a>
-        <div class="menu">
-           <a href="index.html">🏠 Inicio</a>
-           <a href="index.html#productos">🔍 Productos</a>
-           <a href="mis_compras.html" class="active">📋 Mis Compras</a>
-           <a href="pago.html">🛒 Carrito</a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menuNav">
+            <a href="index.html">🏠 Inicio</a>
+            <a href="index.html#productos">🔍 Productos</a>
+            <a href="mis_compras.html" class="active">📋 Mis Compras</a>
+            <a href="pago.html">🛒 Carrito</a>
         </div>
     </nav>
 
     <div class="container">
-        <h1 style="margin-bottom: 30px; color: #0077b6;">📋 Mis Compras</h1>
+        <h1>📋 Mis Compras</h1>
         
-        <div id="comprasContainer">
-            <!-- Aquí se renderizan las compras -->
-        </div>
+        <div id="comprasContainer"></div>
         
-        <div id="sinCompras" style="display: none; text-align: center; padding: 60px;">
-            <i class="fas fa-shopping-bag" style="font-size: 64px; color: #ddd; margin-bottom: 20px;"></i>
+        <div id="sinCompras" class="sin-compras">
+            <i class="fas fa-shopping-bag"></i>
             <h2>Aún no has realizado compras</h2>
             <p>Explora nuestros productos frescos y haz tu primera compra.</p>
             <a href="index.html#productos" class="btn-primario">Ver productos</a>
         </div>
     </div>
 
-    <script src="js/sesion.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            verificarSesion()
-                .then(res => res.json())
-                .then(sesion => {
-                    if (!sesion.logueado || sesion.tipo !== 'consumidor') {
-                        alert('🔒 Acceso denegado. Debes iniciar sesión como comprador.');
+<script src="js/sesion.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        verificarSesion()
+            .then(res => res.json())
+            .then(sesion => {
+
+                if (!sesion.logueado) {
+
+                    mostrarToast(
+                        'Debes iniciar sesión para ver tus compras',
+                        'avisso'
+                    );
+
+                    setTimeout(() => {
+                        window.location.href = 'iniciarSesion.html';
+                    }, 2000);
+
+                    return;
+                }
+
+                if (sesion.tipo !== 'consumidor') {
+
+                    mostrarToast(
+                        'Solo los compradores pueden acceder a Mis Compras',
+                        'aviso'
+                    );
+
+                    setTimeout(() => {
                         cerrarSesion();
                         window.location.href = 'iniciarSesion.html';
-                        return;
-                    }
-                    cargarMisCompras();
-                })
-                .catch(() => {
-                    alert('🔒 Acceso denegado. Debes iniciar sesión como comprador.');
+                    }, 1800);
+
+                    return;
+                }
+
+                cargarMisCompras();
+
+            })
+            .catch(() => {
+
+                mostrarToast(
+                    'Error verificando la sesión',
+                    'error'
+                );
+
+                setTimeout(() => {
                     window.location.href = 'iniciarSesion.html';
-                });
-        });
-    </script>
-    <script src="js/mis_compras.js"></script>
+                }, 1800);
+
+            });
+
+    });
+
+    function toggleMenu() {
+        document.getElementById('menuNav').classList.toggle('activo');
+    }
+</script>
+
+<script src="js/mis_compras.js"></script>
 </body>
 </html>

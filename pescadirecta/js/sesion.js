@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar sesión SIN usar caché del navegador
-    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php', {
+
+    fetch('php/verificar_sesion.php', {
         cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' }
     })
@@ -38,6 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 carrito.onclick = () => window.location.href = 'pago.html';
                 carrito.innerHTML = '🛒 <span class="carrito-badge" id="badgeCarrito">0</span>';
                 document.body.appendChild(carrito);
+
+                if (typeof actualizarBadgeCarrito === 'function') {
+                    actualizarBadgeCarrito();
+                }
             }
         } else {
             menu.innerHTML = `
@@ -49,34 +53,93 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function cerrarSesion(e) {
+
     e.preventDefault();
-    if (!confirm('¿Cerrar sesión?')) return;
-    
-    fetch('https://pesca-mcl1.onrender.com/php/logout.php', { cache: 'no-store' })
-    .then(() => {
-        localStorage.clear();
-        // Redirigir con parámetro único para evitar caché
-        window.location.href = 'index.html?_=' + new Date().getTime();
-    })
-    .catch(() => {
-        localStorage.clear();
-        window.location.href = 'index.html?_=' + new Date().getTime();
-    });
+
+    const modal = document.createElement('div');
+
+    modal.className = 'logout-modal';
+
+    modal.innerHTML = `
+        <div class="logout-box">
+
+            <div class="logout-icon">🚪</div>
+
+            <h3>Cerrar sesión</h3>
+
+            <p>¿Deseas cerrar tu sesión actual?</p>
+
+            <div class="logout-actions">
+
+                <button class="btn-cancelar">
+                    Cancelar
+                </button>
+
+                <button class="btn-confirmar">
+                    Sí, salir
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const btnCancelar =
+        modal.querySelector('.btn-cancelar');
+
+    const btnConfirmar =
+        modal.querySelector('.btn-confirmar');
+
+    btnCancelar.onclick = () => {
+
+        modal.classList.add('cerrando');
+
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    };
+
+    btnConfirmar.onclick = () => {
+
+        btnConfirmar.disabled = true;
+
+        btnConfirmar.textContent = 'Cerrando...';
+
+        fetch('php/logout.php', {
+            cache: 'no-store'
+        })
+        .then(() => {
+
+            localStorage.clear();
+
+            window.location.href =
+                'index.html?_=' + new Date().getTime();
+
+        })
+        .catch(() => {
+
+            localStorage.clear();
+
+            window.location.href =
+                'index.html?_=' + new Date().getTime();
+
+        });
+
+    };
 }
 
-// === DETECTAR "ATRÁS" DEL NAVEGADOR ===
-// Cuando el usuario vuelve con "atrás", verificar sesión de nuevo
 window.addEventListener('pageshow', function(event) {
-    // event.persisted es true cuando la página viene de caché (botón "atrás")
+   
     if (event.persisted) {
-        // Forzar recarga desde el servidor
+        
         window.location.reload();
     }
 });
 
-// === FETCH SEGURO ===
 function fetchSeguro(url, opciones = {}) {
-    // Siempre agregar cache: 'no-store'
+    
     opciones.cache = 'no-store';
     
     return fetch(url, opciones)
@@ -90,12 +153,10 @@ function fetchSeguro(url, opciones = {}) {
         });
 }
 
-// === VERIFICAR SESIÓN DIRECTA ===
 function verificarSesion() {
-    return fetchSeguro('https://pesca-mcl1.onrender.com/php/verificar_sesion.php');
+    return fetchSeguro('php/verificar_sesion.php');
 }
 
-// === MENSAJE DE SESIÓN ===
 function mostrarMensajeSesion() {
     let tiempo = 5;
     let mensaje = document.createElement("div");
@@ -112,7 +173,7 @@ function mostrarMensajeSesion() {
     }, 1000);
 }
 
-// === EXPONER GLOBALMENTE ===
+
 window.fetchSeguro = fetchSeguro;
 window.verificarSesion = verificarSesion;
 window.cerrarSesion = cerrarSesion;

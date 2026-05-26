@@ -3,28 +3,64 @@ let productoActual = null;
 let stockMaximo = 0;
 let todosLosProductos = [];
 
-// === CARGAR PRODUCTOS ===
-fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=inicio")
-    .then(res => res.json())
-    .then(data => {
-        if (data.error) {
-            console.error("Error del servidor:", data.error);
-            if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ ${data.error}</p>`;
-            return;
-        }
-        if (!Array.isArray(data)) {
-            console.error("Respuesta no es array:", data);
-            if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ Error en formato de datos</p>`;
-            return;
-        }
-        todosLosProductos = data;
-        renderProductos(data);
-        llenarCategorias(data);
-    })
-    .catch(err => {
-        console.error("Error:", err);
-        if(grid) grid.innerHTML = "<p>Error cargando productos</p>";
-    });
+function mostrarToast(mensaje, tipo = 'info') {
+    const iconos = {
+        error: '❌',
+        exito: '✅',
+        aviso: '⚠️',
+        info:  'ℹ️'
+    };
+
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+    toast.innerHTML = `<span class="toast-icon">${iconos[tipo] || iconos.info}</span><span>${mensaje}</span>`;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'toastSlideOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+function cargarProductos() {
+    if (!grid) return;
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">Cargando productos...</p>`;
+
+    fetchSeguro("php/producto.php?origen=inicio&t=" + Date.now())
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                console.error("Error del servidor:", data.error);
+                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ ${data.error}</p>`;
+                return;
+            }
+            if (!Array.isArray(data)) {
+                console.error("Respuesta no es array:", data);
+                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ Error en formato de datos</p>`;
+                return;
+            }
+            todosLosProductos = data.map(producto => ({
+                ...producto,
+                cantidad: parseFloat(producto.cantidad) || 0,
+                originalCantidad: parseFloat(producto.cantidad) || 0
+            }));
+            actualizarStockDesdeCarrito();
+            renderProductos(todosLosProductos);
+            llenarCategorias(todosLosProductos);
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            if(grid) grid.innerHTML = "<p>Error cargando productos</p>";
+        });
+}
 
 function renderProductos(lista){
     if(!grid) return;
@@ -69,7 +105,7 @@ function renderProductos(lista){
     });
 }
 
-// === FILTROS ===
+
 function llenarCategorias(productos) {
     if (!Array.isArray(productos)) return;
     
@@ -84,6 +120,27 @@ function llenarCategorias(productos) {
         option.value = cat;
         option.textContent = cat;
         selectCat.appendChild(option);
+    });
+}
+
+function actualizarStockDesdeCarrito() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    if (!Array.isArray(todosLosProductos) || !todosLosProductos.length) return;
+
+    const stockRestado = carrito.reduce((memo, item) => {
+        memo[item.id] = (memo[item.id] || 0) + item.cantidad;
+        return memo;
+    }, {});
+
+    todosLosProductos.forEach(producto => {
+        if (typeof producto.originalCantidad === 'undefined') {
+            producto.originalCantidad = parseFloat(producto.cantidad) || 0;
+        }
+
+        producto.cantidad = Math.max(
+            producto.originalCantidad - (stockRestado[producto.id] || 0),
+            0
+        );
     });
 }
 
@@ -115,7 +172,6 @@ function initFiltros() {
     document.getElementById('category-filter')?.addEventListener('change', filtrarProductos);
 }
 
-// === AGREGAR AL CARRITO ===
 async function agregarAlCarrito() {
     if(!productoActual) return;
 
@@ -124,34 +180,37 @@ async function agregarAlCarrito() {
         const sesion = await res.json();
         
         if (!sesion.logueado) {
-            alert("🔒 Debes iniciar sesión para agregar productos al carrito");
-            window.location.href = 'iniciarSesion.html';
+            mostrarToast("Debes iniciar sesión para agregar productos al carrito", "error");
+            setTimeout(() => window.location.href = 'iniciarSesion.html', 1500);
+            return;
+        } else if (sesion.tipo === 'vendedor') {
+            mostrarToast("Solo los clientes pueden agregar productos al carrito", "error");
             return;
         }
     } catch(e) {
-        alert("🔒 Debes iniciar sesión para agregar productos al carrito");
-        window.location.href = 'iniciarSesion.html';
+        mostrarToast("Debes iniciar sesión para agregar productos al carrito", "error");
+        setTimeout(() => window.location.href = 'iniciarSesion.html', 1500);
         return;
     }
 
     const input = document.getElementById("inputCantidad");
     if(!input){
-        alert("Error interno");
+        mostrarToast("Error interno del sistema", "error");
         return;
     }
 
     let cantidad = parseFloat(input.value);
 
     if(isNaN(cantidad) || cantidad <= 0) {
-        alert("❌ Cantidad inválida");
+        mostrarToast("Cantidad inválida", "error");
         return;
     }
     if(cantidad < 0.5) {
-        alert("❌ Mínimo 0.5 kg");
+        mostrarToast("Mínimo 0.5 kg", "aviso");
         return;
     }
     if(cantidad > stockMaximo) {
-        alert("❌ Máximo: " + stockMaximo.toFixed(2));
+        mostrarToast("Máximo: " + stockMaximo.toFixed(2) + " kg", "aviso");
         return;
     }
 
@@ -162,7 +221,7 @@ async function agregarAlCarrito() {
         let nuevaCantidad = existe.cantidad + cantidad;
 
         if(nuevaCantidad > stockMaximo) {
-            alert("❌ Ya tienes demasiado en carrito");
+            mostrarToast("Ya tienes demasiado en carrito", "aviso");
             return;
         }
 
@@ -183,17 +242,20 @@ async function agregarAlCarrito() {
 
     localStorage.setItem('carrito', JSON.stringify(carrito));
     actualizarBadgeCarrito();
+    actualizarStockDesdeCarrito();
+    filtrarProductos();
 
     document.getElementById("modal").style.display = "none";
     productoActual = null;
     
-    alert("✅ Producto agregado al carrito");
+    setTimeout(() => {
+        mostrarToast("Producto agregado al carrito", "exito");
+    }, 100);
 }
 
-// === CHAT ===
 function iniciarChatVendedor() {
     if(!productoActual || !productoActual.telefono) {
-        alert("Sin teléfono");
+        mostrarToast("El vendedor no tiene teléfono registrado", "aviso");
         return;
     }
     let t = productoActual.telefono.replace(/\D/g, '');
@@ -201,7 +263,6 @@ function iniciarChatVendedor() {
     window.open(`https://wa.me/${t}`, '_blank');
 }
 
-// === BADGE ===
 function actualizarBadgeCarrito() {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     let total = carrito.reduce((sum, item) => sum + item.cantidad, 0);
@@ -213,11 +274,9 @@ function actualizarBadgeCarrito() {
     }
 }
 
-// === GLOBAL ===
 window.agregarAlCarrito = agregarAlCarrito;
 window.iniciarChatVendedor = iniciarChatVendedor;
 
-// === INIT ===
 document.addEventListener('DOMContentLoaded', () => {
 
     initFiltros();
@@ -227,11 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cerrar = document.getElementById("cerrarModal");
 
     if (!modal) {
-        console.error("❌ FALTA #modal en el HTML");
+        console.error("FALTA #modal en el HTML");
         return;
     }
 
-    // abrir modal
     document.addEventListener("click", function(e){
         const card = e.target.closest(".card");
         if(!card) return;
@@ -277,7 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = "block";
     });
 
-    // cerrar modal
     if(cerrar){
         cerrar.onclick = () => {
             modal.style.display = "none";
@@ -291,5 +348,13 @@ document.addEventListener('DOMContentLoaded', () => {
             productoActual = null;
         }
     };
+
+    cargarProductos();
+
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            cargarProductos();
+        }
+    });
 
 });

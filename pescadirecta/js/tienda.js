@@ -52,26 +52,22 @@ function cargarCarrito() {
         }
     });
 
-    // Actualizar resumen de compra (de carrito.html)
     actualizarResumen(total, hayErrorStock);
 }
 
-// === FUNCIONES DE RESUMEN (de carrito.html) ===
 function actualizarResumen(total, hayErrorStock) {
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     
-    // Calcular subtotal
+
     let subtotal = 0;
     carrito.forEach(item => {
         subtotal += item.subtotal;
     });
     
-    // Envío gratis para pedidos mayores a $50
     const envio = subtotal > 50 ? 0 : 5;
     const envioTexto = envio === 0 ? 'Gratis' : `$${envio.toFixed(2)}`;
     const totalFinal = subtotal + envio;
     
-    // Actualizar DOM
     const subtotalEl = document.getElementById('subtotalCarrito');
     const envioEl = document.getElementById('envioCarrito');
     const totalEl = document.getElementById('totalCarrito');
@@ -86,127 +82,359 @@ function actualizarResumen(total, hayErrorStock) {
 }
 
 function modificarCantidad(index, delta) {
+
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
     const item = carrito[index];
-    const nuevaCantidad = parseFloat((item.cantidad + delta).toFixed(2));
-    
-    if (nuevaCantidad < 0.5) { alert("Mínimo 0.5 kg"); return; }
-    if (nuevaCantidad > item.stock) { alert(`Máximo: ${item.stock.toFixed(2)} kg`); return; }
+
+    const nuevaCantidad = parseFloat(
+        (item.cantidad + delta).toFixed(2)
+    );
+
+    if (nuevaCantidad < 0.5) {
+
+        mostrarToast(
+            "⚠️ La cantidad mínima es 0.5 kg",
+            "aviso"
+        );
+
+        return;
+    }
+
+    if (nuevaCantidad > item.stock) {
+
+        mostrarToast(
+            `⚠️ Máximo disponible: ${item.stock.toFixed(2)} kg`,
+            "aviso"
+        );
+
+        return;
+    }
 
     item.cantidad = nuevaCantidad;
+
     item.subtotal = nuevaCantidad * item.precio;
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    localStorage.setItem(
+        'carrito',
+        JSON.stringify(carrito)
+    );
+
+    mostrarToast(
+        "✅ Cantidad actualizada",
+        "exito",
+        1200
+    );
+
     cargarCarrito();
 }
 
 function eliminarDelCarrito(index) {
-    if (!confirm('¿Eliminar este producto?')) return;
+
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    const producto = carrito[index];
+
     carrito.splice(index, 1);
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    localStorage.setItem(
+        'carrito',
+        JSON.stringify(carrito)
+    );
+
+    mostrarToast(
+        `🗑️ ${producto.nombre} eliminado del carrito`,
+        "info"
+    );
+
     cargarCarrito();
+
+    actualizarBadgeCarrito();
 }
 
-// === VACIAR CARRITO (de carrito.html) ===
 function vaciarCarrito() {
-    if (!confirm("¿Estás seguro de vaciar el carrito?")) return;
-    localStorage.setItem('carrito', JSON.stringify([]));
+
+    localStorage.setItem(
+        'carrito',
+        JSON.stringify([])
+    );
+
+    mostrarToast(
+        "🛒 Carrito vaciado correctamente",
+        "info"
+    );
+
     cargarCarrito();
+
     actualizarBadgeCarrito();
 }
 
 function procederPago() {
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    
-    // Validaciones previas
+
+    const carrito = JSON.parse(
+        localStorage.getItem('carrito')
+    ) || [];
+
     let errores = [];
+
     carrito.forEach(item => {
+
         if (item.cantidad > item.stock) {
-            errores.push(`${item.nombre}: solicitado ${item.cantidad.toFixed(2)} kg, disponible ${item.stock.toFixed(2)} kg`);
+
+            errores.push(
+                `${item.nombre}: disponible ${item.stock.toFixed(2)} kg`
+            );
+
         }
+
     });
+
     if (errores.length > 0) {
-        alert("❌ Stock insuficiente:\n\n" + errores.join("\n"));
+
+        mostrarToast(
+            "❌ Algunos productos superan el stock",
+            "error",
+            3500
+        );
+
         return;
     }
-    if (carrito.length === 0) { 
-        alert("Carrito vacío"); 
-        return; 
+
+    if (carrito.length === 0) {
+
+        mostrarToast(
+            "🛒 Tu carrito está vacío",
+            "aviso"
+        );
+
+        return;
     }
 
-    // Verificar sesión
-    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php')
+    fetch('php/verificar_sesion.php')
+
         .then(r => r.json())
+
         .then(sesion => {
+
             if (!sesion.logueado) {
-                alert("Debes iniciar sesión");
-                window.location.href = 'iniciarSesion.html';
+
+                mostrarToast(
+                    "🔒 Debes iniciar sesión",
+                    "aviso",
+                    2000,
+                    () => {
+
+                        window.location.href =
+                            'iniciarSesion.html';
+
+                    }
+                );
+
                 return;
             }
-            
-            // Calcular total
-            let subtotal = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+
+            let subtotal = carrito.reduce(
+                (sum, item) => sum + item.subtotal,
+                0
+            );
+
             const envio = subtotal > 50 ? 0 : 5;
+
             const totalFinal = subtotal + envio;
-            
-            // Confirmar compra
-            if (!confirm(`💳 Total a pagar: $${totalFinal.toFixed(2)}\n(Incluye envío: ${envio === 0 ? 'Gratis' : '$' + envio.toFixed(2)})\n\n¿Confirmar compra?`)) {
-                return;
-            }
-            
-            // 🔄 PROCESAR VENTA Y ACTUALIZAR INVENTARIO
-            return fetch('https://pesca-mcl1.onrender.com/php/procesar_venta.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: carrito })
-            });
+
+            abrirModalPago(totalFinal);
+
         })
-        .then(res => res ? res.json() : null)
-        .then(data => {
-            if (!data) return;
-            
-            if (data.error) {
-                alert("❌ Error: " + data.error);
-                return;
-            }
-            
-            if (data.ok) {
-                // ✅ Éxito: vaciar carrito y mostrar confirmación
-                alert(`✅ ${data.mensaje}\n\nNúmero de orden: #${data.compra_id}\nTotal: $${parseFloat(data.total).toFixed(2)}`);
-                localStorage.removeItem('carrito');
-                actualizarBadgeCarrito();
-                window.location.href = 'index.html';
-            }
-        })
+
         .catch(err => {
+
             console.error(err);
-            alert("❌ Error procesando la compra. Intenta de nuevo.");
+
+            mostrarToast(
+                "❌ Error verificando sesión",
+                "error"
+            );
+
         });
 }
 
+let totalPagoFinal = 0;
+
+function abrirModalPago(totalFinal) {
+    totalPagoFinal = totalFinal;
+    const modal = document.getElementById('modalPago');
+    const modalTotal = document.getElementById('modalTotalPago');
+    const status = document.getElementById('pagoStatus');
+    const form = document.getElementById('formPago');
+    const btn = document.getElementById('btnConfirmarPago');
+
+    if (!modal || !modalTotal || !status || !form || !btn) {
+        console.warn('Modal de pago no encontrado.');
+        return;
+    }
+
+    modalTotal.textContent = `$${totalPagoFinal.toFixed(2)}`;
+    status.textContent = `Total a pagar: $${totalPagoFinal.toFixed(2)}`;
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Pagar ahora';
+    form.reset();
+    modal.classList.add('visible');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalPago() {
+    const modal = document.getElementById('modalPago');
+    const form = document.getElementById('formPago');
+    if (!modal) return;
+    modal.classList.remove('visible');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (form) form.reset();
+}
+
+function validarTarjeta(numero, expiracion, cvv) {
+    const sanitized = numero.replace(/\s+/g, '');
+    const regexNumero = /^\d{16}$/;
+    const regexExp = /^(0[1-9]|1[0-2])\/(\d{2})$/;
+    const regexCvv = /^\d{3,4}$/;
+    return regexNumero.test(sanitized) && regexExp.test(expiracion) && regexCvv.test(cvv);
+}
+
+function enviarPago(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById('tarjetaNombre').value.trim();
+    const numero = document.getElementById('tarjetaNumero').value.trim();
+    const expiracion = document.getElementById('tarjetaExpiracion').value.trim();
+    const cvv = document.getElementById('tarjetaCvv').value.trim();
+    const btn = document.getElementById('btnConfirmarPago');
+    const status = document.getElementById('pagoStatus');
+
+    if (!nombre || !numero || !expiracion || !cvv) {
+        mostrarToast(
+            'Por favor completa todos los campos de pago.',
+            'aviso'
+        );
+        return;
+    }
+
+    if (!validarTarjeta(numero, expiracion, cvv)) {
+        mostrarToast(
+            'Datos de tarjeta inválidos. Revisa el número, expiración y CVV.',
+            'aviso'
+        );
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando al banco...';
+    status.textContent = 'Simulando petición al banco...';
+
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    if (carrito.length === 0) {
+        mostrarToast('El carrito está vacío.', 'aviso');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Pagar ahora';
+        status.textContent = `Total a pagar: $${totalPagoFinal.toFixed(2)}`;
+        return;
+    }
+
+    setTimeout(() => {
+        status.textContent = 'Procesando la compra en el servidor...';
+
+        fetch('php/procesar_venta.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items: carrito })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            cerrarModalPago();
+            mostrarToast(
+                `✅ Pago exitoso de $${totalPagoFinal.toFixed(2)}`,
+                'exito',
+                3500,
+                () => {
+                    localStorage.removeItem('carrito');
+                    actualizarBadgeCarrito();
+                    cargarCarrito();
+                }
+            );
+        })
+        .catch(err => {
+            console.error(err);
+            status.textContent = 'Error en el pago. Intenta nuevamente.';
+            mostrarToast(
+                '❌ No se pudo procesar la compra: ' + err.message,
+                'error',
+                4000
+            );
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Pagar ahora';
+        });
+    }, 5000);
+}
+
 function actualizarDesdeInput(index, nuevoValor) {
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    let carrito = JSON.parse(
+        localStorage.getItem('carrito')
+    ) || [];
+
     let item = carrito[index];
+
     let cantidad = parseFloat(nuevoValor);
-    
-    if(isNaN(cantidad) || cantidad < 0.5) {
-        alert("Mínimo 0.5 kg");
+
+    if (isNaN(cantidad) || cantidad < 0.5) {
+
+        mostrarToast(
+            "⚠️ Mínimo permitido: 0.5 kg",
+            "aviso"
+        );
+
         cargarCarrito();
+
         return;
     }
-    if(cantidad > item.stock) {
-        alert("Máximo: " + item.stock.toFixed(2) + " kg");
+
+    if (cantidad > item.stock) {
+
+        mostrarToast(
+            `⚠️ Máximo disponible: ${item.stock.toFixed(2)} kg`,
+            "aviso"
+        );
+
         cargarCarrito();
+
         return;
     }
-    
+
     item.cantidad = cantidad;
+
     item.subtotal = cantidad * item.precio;
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+    localStorage.setItem(
+        'carrito',
+        JSON.stringify(carrito)
+    );
+
+    mostrarToast(
+        "✅ Cantidad actualizada",
+        "exito",
+        1200
+    );
+
     cargarCarrito();
 }
 
-// === BADGE CARRITO (compartido) ===
 function actualizarBadgeCarrito() {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     let total = 0;
@@ -218,6 +446,69 @@ function actualizarBadgeCarrito() {
         badge.textContent = total.toFixed(1);
         badge.style.display = total > 0 ? 'flex' : 'none';
     }
+}
+
+function mostrarToast(
+    mensaje,
+    tipo = 'info',
+    duracion = 3000,
+    onComplete = null
+) {
+
+    const iconos = {
+        error: '❌',
+        exito: '✅',
+        aviso: '⚠️',
+        info: 'ℹ️'
+    };
+
+    let container =
+        document.getElementById('toast-container');
+
+    if (!container) {
+
+        container = document.createElement('div');
+
+        container.id = 'toast-container';
+
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+
+    toast.className = `toast ${tipo}`;
+
+    toast.innerHTML = `
+        <span class="toast-icon">
+            ${iconos[tipo] || iconos.info}
+        </span>
+
+        <span>${mensaje}</span>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.classList.add('mostrar');
+    });
+
+    setTimeout(() => {
+
+        toast.classList.remove('mostrar');
+
+        toast.classList.add('ocultar');
+
+        setTimeout(() => {
+
+            toast.remove();
+
+            if (typeof onComplete === 'function') {
+                onComplete();
+            }
+
+        }, 400);
+
+    }, duracion);
 }
 
 window.modificarCantidad = modificarCantidad;

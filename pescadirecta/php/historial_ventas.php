@@ -6,8 +6,6 @@ include("conexion.php");
 
 session_start();
 
-
-// SOLO vendedores
 if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'vendedor') {
 
     http_response_code(401);
@@ -22,7 +20,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'vendedor') {
 $vendedor_id = $_SESSION['user_id'];
 
 $sql = "
-
 SELECT
     productos.nombre AS producto,
     consumidores.nombre AS cliente,
