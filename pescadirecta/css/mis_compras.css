@@ -53,13 +53,13 @@ nav {
     cursor: pointer;
 }
 
-.menu {
+#menuNav {
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
-.menu a {
+#menuNav a {
     color: white;
     text-decoration: none;
     padding: 8px 15px;
@@ -229,7 +229,7 @@ nav {
         display: block;
     }
     
-    .menu {
+    #menuNav {
         display: none;
         position: absolute;
         top: 100%;
@@ -241,11 +241,11 @@ nav {
         gap: 5px;
     }
     
-    .menu.activo {
+    #menuNav.activo {
         display: flex;
     }
     
-    .menu a {
+    #menuNav a {
         width: 100%;
         text-align: center;
     }
