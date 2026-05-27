@@ -633,3 +633,87 @@ tr:last-child td {
     font-size: 18px;
     flex-shrink: 0;
 }
+
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    animation: cfadeIn .25s ease;
+}
+
+.confirm-box {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    border-radius: 20px;
+    padding: 35px 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    animation: cpop .3s ease;
+}
+
+.confirm-box i {
+    font-size: 50px;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.confirm-box h3 {
+    font-size: 22px;
+    color: #023e8a;
+    margin-bottom: 10px;
+}
+
+.confirm-box p {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.confirm-actions button {
+    flex: 1;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.confirm-actions .btn-cancelar {
+    background: #ecf0f1;
+    color: #2c3e50;
+}
+
+.confirm-actions .btn-cancelar:hover {
+    background: #d5dbdb;
+}
+
+.confirm-actions .btn-aceptar {
+    background: #e74c3c;
+    color: white;
+}
+
+.confirm-actions .btn-aceptar:hover {
+    background: #c0392b;
+}
+
+@keyframes cfadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes cpop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}

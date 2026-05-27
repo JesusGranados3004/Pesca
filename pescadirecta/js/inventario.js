@@ -128,32 +128,67 @@ function editarProducto(id) {
 
 function eliminarProducto(id) {
 
-    if (!confirm("¿Marcar este producto como no disponible?")) return;
+    mostrarConfirmacion(
+        "¿Marcar este producto como no disponible?",
+        "El producto dejará de verse en la tienda",
+        () => {
+            fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=eliminar_producto&id=" + id, {
+                method: "POST"
+            })
+            .then(res => res.text())
+            .then(respuesta => {
 
-    fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=eliminar_producto&id=" + id, {
-        method: "POST"
-    })
-    .then(res => res.text())
-    .then(respuesta => {
+                if (respuesta.trim() === "ok") {
 
-        if (respuesta.trim() === "ok") {
+                    mostrarToast("Producto marcado como no disponible", "exito");
+                    cargarMisProductos();
 
-            mostrarToast("Producto marcado como no disponible", "exito");
+                } else {
 
-            cargarMisProductos();
+                    mostrarToast("<i class=\"fas fa-times-circle\"></i> " + respuesta, "error");
 
-        } else {
+                }
 
-            mostrarToast("<i class=\"fas fa-times-circle\"></i> " + respuesta, "error");
-
+            })
+            .catch(err => {
+                console.error(err);
+                mostrarToast("<i class=\"fas fa-times-circle\"></i> Error al actualizar el producto", "error");
+            });
         }
+    );
 
-    })
-    .catch(err => {
-        console.error(err);
-        mostrarToast("<i class=\"fas fa-times-circle\"></i> Error al actualizar el producto", "error");
+}
+
+function mostrarConfirmacion(titulo, mensaje, alAceptar) {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+        <div class="confirm-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>${titulo}</h3>
+            <p>${mensaje}</p>
+            <div class="confirm-actions">
+                <button class="btn-cancelar">Cancelar</button>
+                <button class="btn-aceptar">Aceptar</button>
+            </div>
+        </div>
+    `;
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) cerrar();
     });
 
+    overlay.querySelector('.btn-cancelar').addEventListener('click', cerrar);
+    overlay.querySelector('.btn-aceptar').addEventListener('click', () => {
+        cerrar();
+        alAceptar();
+    });
+
+    document.body.appendChild(overlay);
+
+    function cerrar() {
+        overlay.remove();
+    }
 }
 
 function verHistorial() {
