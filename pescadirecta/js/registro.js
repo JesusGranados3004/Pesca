@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "info"
             );
 
-            fetch('php/registro.php', {
+            fetch('https://pesca-mcl1.onrender.com/php/registro.php', {
                 method: 'POST',
                 body: datos
             })

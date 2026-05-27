@@ -108,7 +108,7 @@ function cambiarModo(modo) {
     }
 }
 
-fetchSeguro("php/producto.php?origen=obtener_producto&id=" + id)
+fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=obtener_producto&id=" + id)
 .then(res => res.json())
 .then(data => {
 
@@ -236,7 +236,7 @@ document.getElementById("formEditarProducto")
         }
     }
 
-    fetchSeguro("php/producto.php?origen=editar_producto", {
+    fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=editar_producto", {
         method: "POST",
         body: formData
     })

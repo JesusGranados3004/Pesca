@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const datos = new FormData(this);
             const verifyingToast = mostrarToast("Verificando...", "info");
 
-            fetch('php/login.php', { method: 'POST', body: datos })
+            fetch('https://pesca-mcl1.onrender.com/php/login.php', { method: 'POST', body: datos })
             .then(r => r.json())
             .then(data => {
                 if (verifyingToast && typeof verifyingToast.dismiss === 'function') {

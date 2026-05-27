@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    fetch('php/verificar_sesion.php', {
+    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php', {
         cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' }
     })
@@ -110,7 +110,7 @@ function cerrarSesion(e) {
 
         btnConfirmar.textContent = 'Cerrando...';
 
-        fetch('php/logout.php', {
+        fetch('https://pesca-mcl1.onrender.com/php/logout.php', {
             cache: 'no-store'
         })
         .then(() => {
@@ -157,7 +157,7 @@ function fetchSeguro(url, opciones = {}) {
 }
 
 function verificarSesion() {
-    return fetchSeguro('php/verificar_sesion.php');
+    return fetchSeguro('https://pesca-mcl1.onrender.com/php/verificar_sesion.php');
 }
 
 function mostrarMensajeSesion() {

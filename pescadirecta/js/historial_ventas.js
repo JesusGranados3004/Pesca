@@ -88,7 +88,7 @@ function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
 function cargarHistorial() {
 
-    fetchSeguro('php/historial_ventas.php')
+    fetchSeguro('https://pesca-mcl1.onrender.com/php/historial_ventas.php')
 
         .then(res => res.json())
 

@@ -34,7 +34,7 @@ function cargarProductos() {
     if (!grid) return;
     grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">Cargando productos...</p>`;
 
-    fetchSeguro("php/producto.php?origen=inicio&t=" + Date.now())
+    fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=inicio&t=" + Date.now())
         .then(res => res.json())
         .then(data => {
             if (data.error) {
@@ -176,7 +176,7 @@ async function agregarAlCarrito() {
     if(!productoActual) return;
 
     try {
-        const res = await fetch('php/verificar_sesion.php');
+        const res = await fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php');
         const sesion = await res.json();
         
         if (!sesion.logueado) {

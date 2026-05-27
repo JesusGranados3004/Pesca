@@ -53,13 +53,13 @@ nav {
     transform: scale(1.02);
 }
 
-#menuNav {
+.menu {
     display: flex;
     gap: 12px;
     align-items: center;
 }
 
-#menuNav a {
+.menu a {
     text-decoration: none;
     color: rgba(255,255,255,0.95);
     font-weight: 600;
@@ -794,7 +794,7 @@ footer::before {
         display: block;
     }
 
-    #menuNav {
+    .menu {
         display: none;
         position: absolute;
         top: 100%;
@@ -807,11 +807,11 @@ footer::before {
         box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
-    #menuNav.activo {
+    .menu.activo {
         display: flex;
     }
 
-    #menuNav a {
+    .menu a {
         width: 100%;
         text-align: center;
         padding: 12px 16px;

@@ -210,7 +210,7 @@ function procederPago() {
         return;
     }
 
-    fetch('php/verificar_sesion.php')
+    fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php')
 
         .then(r => r.json())
 
@@ -344,7 +344,7 @@ function enviarPago(event) {
     setTimeout(() => {
         status.textContent = 'Procesando la compra en el servidor...';
 
-        fetch('php/procesar_venta.php', {
+        fetch('https://pesca-mcl1.onrender.com/php/procesar_venta.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
