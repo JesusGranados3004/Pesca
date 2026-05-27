@@ -128,17 +128,17 @@ function editarProducto(id) {
 
 function eliminarProducto(id) {
 
-    if (!confirm("¿Eliminar este producto?")) return;
+    if (!confirm("¿Marcar este producto como no disponible?")) return;
 
     fetchSeguro("https://pesca-mcl1.onrender.com/php/producto.php?origen=eliminar_producto&id=" + id, {
-        method: "DELETE"
+        method: "POST"
     })
     .then(res => res.text())
     .then(respuesta => {
 
         if (respuesta.trim() === "ok") {
 
-            mostrarToast("<i class=\"fas fa-trash-alt\"></i> Producto eliminado", "exito");
+            mostrarToast("Producto marcado como no disponible", "exito");
 
             cargarMisProductos();
 
@@ -151,7 +151,7 @@ function eliminarProducto(id) {
     })
     .catch(err => {
         console.error(err);
-        mostrarToast("<i class=\"fas fa-times-circle\"></i> Error eliminando el producto", "error");
+        mostrarToast("<i class=\"fas fa-times-circle\"></i> Error al actualizar el producto", "error");
     });
 
 }

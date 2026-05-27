@@ -283,7 +283,7 @@ switch ($origen) {
 
         $vendedor_id = $_SESSION['user_id'];
 
-        $sql = "DELETE FROM productos
+        $sql = "UPDATE productos SET disponibilidad = 0
                 WHERE id = ?
                 AND vendedor_id = ?";
 
@@ -293,15 +293,11 @@ switch ($origen) {
 
         if ($stmt->execute()) {
 
-            echo json_encode([
-                "success" => true
-            ]);
+            echo "ok";
 
         } else {
 
-            echo json_encode([
-                "error" => "No se pudo eliminar"
-            ]);
+            echo "error: No se pudo actualizar";
 
         }
 
