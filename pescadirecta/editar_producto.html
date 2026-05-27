@@ -146,11 +146,19 @@
             verificarSesion()
                 .then(res => res.json())
                 .then(sesion => {
-                    if (!sesion.logueado || sesion.tipo !== 'vendedor') {
+                    if (!sesion.logueado) {
+                        mostrarToast('Debes iniciar sesión para editar productos', 'aviso');
+                        setTimeout(() => {
+                            window.location.href = 'iniciarSesion.html';
+                        }, 2000);
+                        return;
+                    }
+                    if (sesion.tipo !== 'vendedor') {
                         mostrarToast('Acceso solo para vendedores', 'aviso');
                         setTimeout(() => {
                             window.location.href = 'index.html?_=' + Date.now();
                         }, 2000);
+                        return;
                     }
                 })
                 .catch(() => {

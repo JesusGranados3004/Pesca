@@ -181,7 +181,7 @@ async function agregarAlCarrito() {
         
         if (!sesion.logueado) {
             mostrarToast("Debes iniciar sesión para agregar productos al carrito", "error");
-            setTimeout(() => window.location.href = 'index.html?_=' + Date.now(), 2000);
+            setTimeout(() => window.location.href = 'iniciarSesion.html', 2000);
             return;
         } else if (sesion.tipo === 'vendedor') {
             mostrarToast("Solo los clientes pueden agregar productos al carrito", "error");
@@ -189,7 +189,7 @@ async function agregarAlCarrito() {
         }
     } catch(e) {
         mostrarToast("Debes iniciar sesión para agregar productos al carrito", "error");
-        setTimeout(() => window.location.href = 'index.html?_=' + Date.now(), 2000);
+        setTimeout(() => window.location.href = 'iniciarSesion.html', 2000);
         return;
     }
 

@@ -47,13 +47,15 @@
             .then(res => res.json())
             .then(sesion => {
 
-                if (!sesion.logueado || sesion.tipo !== 'consumidor') {
-                    mostrarToast(
-                        sesion.logueado
-                            ? 'Solo los compradores pueden acceder aquí'
-                            : 'Debes iniciar sesión para ver tus compras',
-                        'aviso'
-                    );
+                if (!sesion.logueado) {
+                    mostrarToast('Debes iniciar sesión para ver tus compras', 'aviso');
+                    setTimeout(() => {
+                        window.location.href = 'iniciarSesion.html';
+                    }, 2000);
+                    return;
+                }
+                if (sesion.tipo !== 'consumidor') {
+                    mostrarToast('Solo los compradores pueden acceder aquí', 'aviso');
                     setTimeout(() => {
                         window.location.href = 'index.html?_=' + Date.now();
                     }, 2000);

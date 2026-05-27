@@ -223,7 +223,7 @@ function procederPago() {
                     "aviso",
                     2000,
                     () => {
-                        window.location.href = "index.html?_=" + Date.now();
+                        window.location.href = "iniciarSesion.html";
                     }
                 );
 

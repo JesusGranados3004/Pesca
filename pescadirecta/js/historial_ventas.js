@@ -4,7 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(sesion => {
 
-            if (!sesion.logueado || sesion.tipo !== 'vendedor') {
+            if (!sesion.logueado) {
+                mostrarToast(
+                    "<i class=\"fas fa-lock\"></i> Debes iniciar sesión",
+                    "error",
+                    () => {
+                        window.location.href = "iniciarSesion.html";
+                    }
+                );
+                return;
+            }
+
+            if (sesion.tipo !== 'vendedor') {
 
                 mostrarToast(
                     "<i class=\"fas fa-ban\"></i> Acceso solo para vendedores",
