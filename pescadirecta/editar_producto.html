@@ -135,13 +135,26 @@
 
     </div>
 
+    <script src="js/sesion.js"></script>
+    <script src="js/editar_producto.js"></script>
     <script>
         function toggleMenu() {
             document.getElementById('menuNav').classList.toggle('activo');
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            verificarSesion()
+                .then(res => res.json())
+                .then(sesion => {
+                    if (!sesion.logueado || sesion.tipo !== 'vendedor') {
+                        window.location.href = 'index.html?_=' + Date.now();
+                    }
+                })
+                .catch(() => {
+                    window.location.href = 'index.html?_=' + Date.now();
+                });
+        });
     </script>
-    <script src="js/sesion.js"></script>
-    <script src="js/editar_producto.js"></script>
 
 </body>
 </html>

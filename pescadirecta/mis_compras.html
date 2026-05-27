@@ -47,32 +47,8 @@
             .then(res => res.json())
             .then(sesion => {
 
-                if (!sesion.logueado) {
-
-                    mostrarToast(
-                        'Debes iniciar sesión para ver tus compras',
-                        'avisso'
-                    );
-
-                    setTimeout(() => {
-                        window.location.href = 'iniciarSesion.html';
-                    }, 2000);
-
-                    return;
-                }
-
-                if (sesion.tipo !== 'consumidor') {
-
-                    mostrarToast(
-                        'Solo los compradores pueden acceder a Mis Compras',
-                        'aviso'
-                    );
-
-                    setTimeout(() => {
-                        cerrarSesion();
-                        window.location.href = 'iniciarSesion.html';
-                    }, 1800);
-
+                if (!sesion.logueado || sesion.tipo !== 'consumidor') {
+                    window.location.href = 'index.html?_=' + Date.now();
                     return;
                 }
 

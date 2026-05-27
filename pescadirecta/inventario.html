@@ -137,23 +137,13 @@
                 .then(res => res.json())
                 .then(sesion => {
                     if (!sesion.logueado || sesion.tipo !== 'vendedor') {
-                        mostrarToast('Acceso denegado. Solo vendedores pueden acceder a esta sección.', 'aviso', 3000);
-                        setTimeout(() => {
-                            window.location.href =
-                                'iniciarSesion.html';
-
-                        }, 1800);
+                        window.location.href = 'index.html?_=' + Date.now();
                         return;
                     }
                     cargarMisProductos();
                 })
                 .catch(() => {
-                    mostrarToast('Error al verificar sesión. Por favor, inicia sesión nuevamente.', 'error');
-                    setTimeout(() => {
-                            window.location.href =
-                                'iniciarSesion.html';
-
-                    }, 1800);
+                    window.location.href = 'index.html?_=' + Date.now();
                 });
         });
         

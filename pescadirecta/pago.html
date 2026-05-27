@@ -106,6 +106,15 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             verificarSesion()
+                .then(res => res.json())
+                .then(sesion => {
+                    if (!sesion.logueado || sesion.tipo !== 'consumidor') {
+                        window.location.href = 'index.html?_=' + Date.now();
+                    }
+                })
+                .catch(() => {
+                    window.location.href = 'index.html?_=' + Date.now();
+                });
         });
     </script>
 </body>
