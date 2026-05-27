@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     localStorage.setItem('userTipo', data.tipo);
 
-                    // SOLO PARA MOSTRAR UNA VEZ
                     sessionStorage.setItem(
                         'toastBienvenida',
                         JSON.stringify({
@@ -52,10 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container = document.getElementById('toast-container');

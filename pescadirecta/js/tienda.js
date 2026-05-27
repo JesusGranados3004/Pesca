@@ -30,7 +30,7 @@ function cargarCarrito() {
                 <h4>${item.nombre}</h4>
                 <p>$${item.precio} /kg • ${item.vendedor || 'N/A'}</p>
                 <p>Stock: ${parseFloat(item.stock).toFixed(2)} kg</p>
-                <div class="alerta-stock" id="alerta-${index}">⚠️ Excede stock disponible</div>
+                <div class="alerta-stock" id="alerta-${index}"><i class="fas fa-exclamation-triangle"></i> Excede stock disponible</div>
             </div>
             <div class="cantidad-control-carrito">
                 <button onclick="modificarCantidad(${index}, -0.5)" ${item.cantidad <= 0.5 ? 'disabled' : ''}>−</button>
@@ -42,7 +42,7 @@ function cargarCarrito() {
                 <button onclick="modificarCantidad(${index}, 0.5)" ${item.cantidad >= item.stock ? 'disabled' : ''}>+</button>
             </div>
             <div class="carrito-precio">$${item.subtotal.toFixed(2)}</div>
-            <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})">🗑️</button>
+            <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})"><i class="fas fa-trash-alt"></i></button>
         `;
         contenedor.appendChild(div);
 
@@ -94,7 +94,7 @@ function modificarCantidad(index, delta) {
     if (nuevaCantidad < 0.5) {
 
         mostrarToast(
-            "⚠️ La cantidad mínima es 0.5 kg",
+            "<i class=\"fas fa-exclamation-triangle\"></i> La cantidad mínima es 0.5 kg",
             "aviso"
         );
 
@@ -104,7 +104,7 @@ function modificarCantidad(index, delta) {
     if (nuevaCantidad > item.stock) {
 
         mostrarToast(
-            `⚠️ Máximo disponible: ${item.stock.toFixed(2)} kg`,
+            `<i class="fas fa-exclamation-triangle"></i> Máximo disponible: ${item.stock.toFixed(2)} kg`,
             "aviso"
         );
 
@@ -121,7 +121,7 @@ function modificarCantidad(index, delta) {
     );
 
     mostrarToast(
-        "✅ Cantidad actualizada",
+        "<i class=\"fas fa-check-circle\"></i> Cantidad actualizada",
         "exito",
         1200
     );
@@ -143,7 +143,7 @@ function eliminarDelCarrito(index) {
     );
 
     mostrarToast(
-        `🗑️ ${producto.nombre} eliminado del carrito`,
+        `<i class="fas fa-trash-alt"></i> ${producto.nombre} eliminado del carrito`,
         "info"
     );
 
@@ -160,7 +160,7 @@ function vaciarCarrito() {
     );
 
     mostrarToast(
-        "🛒 Carrito vaciado correctamente",
+        "<i class=\"fas fa-shopping-cart\"></i> Carrito vaciado correctamente",
         "info"
     );
 
@@ -192,7 +192,7 @@ function procederPago() {
     if (errores.length > 0) {
 
         mostrarToast(
-            "❌ Algunos productos superan el stock",
+            "<i class=\"fas fa-times-circle\"></i> Algunos productos superan el stock",
             "error",
             3500
         );
@@ -203,7 +203,7 @@ function procederPago() {
     if (carrito.length === 0) {
 
         mostrarToast(
-            "🛒 Tu carrito está vacío",
+            "<i class=\"fas fa-shopping-cart\"></i> Tu carrito está vacío",
             "aviso"
         );
 
@@ -219,7 +219,7 @@ function procederPago() {
             if (!sesion.logueado) {
 
                 mostrarToast(
-                    "🔒 Debes iniciar sesión",
+                    "<i class=\"fas fa-lock\"></i> Debes iniciar sesión",
                     "aviso",
                     2000,
                     () => {
@@ -251,7 +251,7 @@ function procederPago() {
             console.error(err);
 
             mostrarToast(
-                "❌ Error verificando sesión",
+                "<i class=\"fas fa-times-circle\"></i> Error verificando sesión",
                 "error"
             );
 
@@ -359,7 +359,7 @@ function enviarPago(event) {
 
             cerrarModalPago();
             mostrarToast(
-                `✅ Pago exitoso de $${totalPagoFinal.toFixed(2)}`,
+                `<i class="fas fa-check-circle"></i> Pago exitoso de $${totalPagoFinal.toFixed(2)}`,
                 'exito',
                 3500,
                 () => {
@@ -373,7 +373,7 @@ function enviarPago(event) {
             console.error(err);
             status.textContent = 'Error en el pago. Intenta nuevamente.';
             mostrarToast(
-                '❌ No se pudo procesar la compra: ' + err.message,
+                '<i class="fas fa-times-circle"></i> No se pudo procesar la compra: ' + err.message,
                 'error',
                 4000
             );
@@ -396,7 +396,7 @@ function actualizarDesdeInput(index, nuevoValor) {
     if (isNaN(cantidad) || cantidad < 0.5) {
 
         mostrarToast(
-            "⚠️ Mínimo permitido: 0.5 kg",
+            "<i class=\"fas fa-exclamation-triangle\"></i> Mínimo permitido: 0.5 kg",
             "aviso"
         );
 
@@ -408,7 +408,7 @@ function actualizarDesdeInput(index, nuevoValor) {
     if (cantidad > item.stock) {
 
         mostrarToast(
-            `⚠️ Máximo disponible: ${item.stock.toFixed(2)} kg`,
+            `<i class="fas fa-exclamation-triangle"></i> Máximo disponible: ${item.stock.toFixed(2)} kg`,
             "aviso"
         );
 
@@ -427,7 +427,7 @@ function actualizarDesdeInput(index, nuevoValor) {
     );
 
     mostrarToast(
-        "✅ Cantidad actualizada",
+        "<i class=\"fas fa-check-circle\"></i> Cantidad actualizada",
         "exito",
         1200
     );
@@ -456,10 +456,10 @@ function mostrarToast(
 ) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container =

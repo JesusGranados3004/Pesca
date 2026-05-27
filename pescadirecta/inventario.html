@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Inventario - PescaDirecta</title>
     <link rel="stylesheet" href="css/inventario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -13,18 +14,17 @@
 
     <header class="inventario-header">
         <a href="index.html" class="logo-link">
-            <div class="logo">🐟 PescaDirecta</div>
+            <div class="logo"><i class="fas fa-fish"></i> PescaDirecta</div>
         </a>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <nav id="menuNav">
-            <a href="index.html">🏠 Inicio</a>
-            <a href="inventario.html" class="activo">📦 Mi Inventario</a>
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <a href="inventario.html" class="activo"><i class="fas fa-box"></i> Mi Inventario</a>
         </nav>
     </header>
 
     <div class="container">
         
-        <!-- VISTA LISTA -->
         <div id="vistaLista" class="vista-lista activa">
             
             <div class="stats-bar">
@@ -44,10 +44,10 @@
 
             <div class="acciones-vendedor">
                 <button class="btn-agregar" onclick="mostrarFormulario()">
-                    ➕ Agregar Nuevo Producto
+                    <i class="fas fa-plus"></i> Agregar Nuevo Producto
                 </button>
                 <button class="btn-historial" onclick="verHistorial()">
-                    📊 Ver Historial de Ventas
+                    <i class="fas fa-chart-bar"></i> Ver Historial de Ventas
                 </button>
             </div>
 
@@ -76,7 +76,6 @@
             </div>
         </div>
 
-        <!-- VISTA FORMULARIO -->
         <div id="vistaFormulario" class="vista-formulario">
             <button class="btn-volver" onclick="mostrarLista()">← Volver a mi inventario</button>
             
@@ -109,7 +108,7 @@
                     </select>
 
                     <div class="drop-zone" id="dropZone">
-                        <div class="drop-zone__icon">📁</div>
+                        <div class="drop-zone__icon"><i class="fas fa-folder-open"></i></div>
                         <div class="drop-zone__text">
                             <strong>Arrastra tu imagen aquí</strong><br>
                             o haz clic para seleccionar
@@ -117,13 +116,13 @@
                         <div class="drop-zone__preview" id="previewContainer">
                             <img id="previewImage" src="" alt="Vista previa">
                             <div class="drop-zone__file-info" id="fileInfo"></div>
-                            <button type="button" class="drop-zone__remove" id="removeFile">❌ Cambiar imagen</button>
+                            <button type="button" class="drop-zone__remove" id="removeFile"><i class="fas fa-times-circle"></i> Cambiar imagen</button>
                         </div>
                         <input type="file" name="imagen" id="fileInput" class="hidden-input" accept="image/*">
                     </div>
 
                     <div class="boton-guardar">
-                        <button type="submit" class="btn-secundario">💾 Guardar Producto</button>
+                        <button type="submit" class="btn-secundario"><i class="fas fa-save"></i> Guardar Producto</button>
                     </div>
                 </form>
             </div>

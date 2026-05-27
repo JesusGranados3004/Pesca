@@ -46,9 +46,9 @@ function renderCompras(compras) {
                     <img src="${imagen}" alt="${item.nombre}" onerror="this.src='img/default-producto.svg'">
                     <div class="item-info">
                         <h4>${item.nombre}</h4>
-                        <p>📍 ${item.origen || 'Origen no especificado'}</p>
-                        <p>👤 Vendedor: ${item.vendedor}</p>
-                        <p>⚖️ ${item.cantidad.toFixed(2)} kg × $${item.precio_unitario.toLocaleString()} = <strong>$${item.subtotal.toLocaleString()}</strong></p>
+                        <p><i class="fas fa-map-marker-alt"></i> ${item.origen || 'Origen no especificado'}</p>
+                        <p><i class="fas fa-user"></i> Vendedor: ${item.vendedor}</p>
+                        <p><i class="fas fa-weight"></i> ${item.cantidad.toFixed(2)} kg × $${item.precio_unitario.toLocaleString()} = <strong>$${item.subtotal.toLocaleString()}</strong></p>
                     </div>
                     <a href="https://wa.me/${formatearTelefono(item.vendedor_telefono)}" target="_blank" class="btn-whatsapp" title="Contactar vendedor">
                         <i class="fab fa-whatsapp"></i>
@@ -86,10 +86,10 @@ function formatearTelefono(telefono) {
 function mostrarToast(mensaje, tipo = 'info', duracion = 3000) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container = document.getElementById('toast-container');

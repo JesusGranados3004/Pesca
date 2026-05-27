@@ -23,6 +23,60 @@ body {
     line-height: 1.65;
 }
 
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 80px;
+    background: var(--azul-primario);
+    box-shadow: 0 2px 20px rgba(0,119,182,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.menu {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.menu a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.95);
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 999px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 15px;
+}
+
+.menu a:hover {
+    background: rgba(255,255,255,0.16);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
 .contenedor {
     max-width: 740px;
     margin: 0 auto;
@@ -328,7 +382,6 @@ form {
     font-size: 13px;
 }
 
-/* ========== BOTÓN ========== */
 .acciones-form {
     margin-top: 14px;
     text-align: center;
@@ -353,7 +406,6 @@ form {
     box-shadow: 0 20px 46px rgba(0,119,182,0.24);
 }
 
-/* ========== MENSAJE INFO ========== */
 .mensaje-info {
     margin-top: 16px;
     padding: 14px;
@@ -365,7 +417,40 @@ form {
     text-align: center;
 }
 
-/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    nav {
+        padding: 16px 20px;
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--azul-primario);
+        flex-direction: column;
+        padding: 15px;
+        gap: 5px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .menu.activo {
+        display: flex;
+    }
+
+    .menu a {
+        width: 100%;
+        text-align: center;
+        padding: 12px 16px;
+    }
+}
+
 @media (max-width: 600px) {
     .contenedor {
         padding: 18px;
@@ -407,7 +492,6 @@ form {
     }
 }
 
-/* ========== TOAST NOTIFICATIONS ========== */
 #toast-container {
     position: fixed;
     top: 20px;

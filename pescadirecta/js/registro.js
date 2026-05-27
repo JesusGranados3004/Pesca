@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const passConfirm =
                 datos.get("password_confirm");
 
-            // VALIDAR CONTRASEÑAS
             if (pass !== passConfirm) {
 
                 mostrarToast(
@@ -48,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // VALIDAR LONGITUD
             if (pass.length < 6) {
 
                 mostrarToast(
@@ -59,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // PROCESANDO
             mostrarToast(
                 "Procesando registro...",
                 "info"

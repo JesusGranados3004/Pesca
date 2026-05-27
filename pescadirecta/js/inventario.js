@@ -53,8 +53,8 @@ function renderMisProductos(productos) {
                 <td>${parseFloat(p.cantidad).toFixed(2)} kg</td>
                 <td>${estado}</td>
                 <td class="acciones">
-                    <button class="btn-icono btn-editar" onclick="editarProducto(${p.id})" title="Editar">✏️</button>
-                    <button class="btn-icono btn-eliminar" onclick="eliminarProducto(${p.id})" title="Eliminar">🗑️</button>
+                    <button class="btn-icono btn-editar" onclick="editarProducto(${p.id})" title="Editar"><i class="fas fa-pen"></i></button>
+                    <button class="btn-icono btn-eliminar" onclick="eliminarProducto(${p.id})" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>`;
         tbody.insertAdjacentHTML('beforeend', row);
@@ -138,20 +138,20 @@ function eliminarProducto(id) {
 
         if (respuesta.trim() === "ok") {
 
-            mostrarToast("🗑️ Producto eliminado", "exito");
+            mostrarToast("<i class=\"fas fa-trash-alt\"></i> Producto eliminado", "exito");
 
             cargarMisProductos();
 
         } else {
 
-            mostrarToast("❌ " + respuesta, "error");
+            mostrarToast("<i class=\"fas fa-times-circle\"></i> " + respuesta, "error");
 
         }
 
     })
     .catch(err => {
         console.error(err);
-        mostrarToast("❌ Error eliminando el producto", "error");
+        mostrarToast("<i class=\"fas fa-times-circle\"></i> Error eliminando el producto", "error");
     });
 
 }
@@ -202,7 +202,7 @@ function handleFiles(e) {
     const reader = new FileReader();
     reader.onload = (e) => {
         previewImage.src = e.target.result;
-        fileInfo.textContent = `📷 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+        fileInfo.textContent = `<i class="fas fa-camera"></i> ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
         previewContainer.style.display = 'block';
         dropZone.querySelector('.drop-zone__icon').style.display = 'none';
         dropZone.querySelector('.drop-zone__text').style.display = 'none';
@@ -237,17 +237,17 @@ if (formProducto) {
                 return;
             }
             if (respuesta.trim() === 'ok') {
-                mostrarToast('✅ Producto guardado', 'exito');
+                mostrarToast('<i class="fas fa-check-circle"></i> Producto guardado', 'exito');
                 this.reset();
                 fileInput.value = ''; previewImage.src = ''; previewContainer.style.display = 'none';
                 dropZone.querySelector('.drop-zone__icon').style.display = 'block';
                 dropZone.querySelector('.drop-zone__text').style.display = 'block';
                 mostrarLista();
             } else {
-                mostrarToast('❌ Error: ' + respuesta, 'error');
+                mostrarToast('<i class="fas fa-times-circle"></i> Error: ' + respuesta, 'error');
             }
         })
-        .catch(err => mostrarToast('❌ Error: ' + err, 'error'));
+        .catch(err => mostrarToast('<i class="fas fa-times-circle"></i> Error: ' + err, 'error'));
     });
 }
 
@@ -259,10 +259,10 @@ function mostrarToast(
 ) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container =
@@ -277,7 +277,6 @@ function mostrarToast(
         document.body.appendChild(container);
     }
 
-    // ELIMINAR TOASTS ANTERIORES
     container.innerHTML = '';
 
     const toast =

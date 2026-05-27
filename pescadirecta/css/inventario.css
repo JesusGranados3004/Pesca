@@ -567,10 +567,6 @@ tr:last-child td {
     }
 }
 
-/* =========================
-   TOAST NOTIFICATIONS
-========================= */
-
 #toast-container {
     position: fixed;
     top: 20px;

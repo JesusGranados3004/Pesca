@@ -5,10 +5,10 @@ let todosLosProductos = [];
 
 function mostrarToast(mensaje, tipo = 'info') {
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info:  'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info:  '<i class="fas fa-info-circle"></i>'
     };
 
     let container = document.getElementById('toast-container');
@@ -39,12 +39,12 @@ function cargarProductos() {
         .then(data => {
             if (data.error) {
                 console.error("Error del servidor:", data.error);
-                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ ${data.error}</p>`;
+                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;"><i class="fas fa-exclamation-triangle"></i> ${data.error}</p>`;
                 return;
             }
             if (!Array.isArray(data)) {
                 console.error("Respuesta no es array:", data);
-                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;">⚠️ Error en formato de datos</p>`;
+                if(grid) grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:60px;"><i class="fas fa-exclamation-triangle"></i> Error en formato de datos</p>`;
                 return;
             }
             todosLosProductos = data.map(producto => ({
@@ -99,7 +99,7 @@ function renderProductos(lista){
             <h3>${producto.nombre}</h3>
             <p>${producto.descripcion}</p>
             <div class="price">$${producto.precio} <small>/kg</small></div>
-            <div class="stock-info">📦 ${parseFloat(producto.cantidad).toFixed(2)} kg</div>
+            <div class="stock-info"><i class="fas fa-box"></i> ${parseFloat(producto.cantidad).toFixed(2)} kg</div>
         </div>`;
         grid.insertAdjacentHTML("beforeend", card);
     });

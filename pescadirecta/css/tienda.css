@@ -24,7 +24,6 @@ body {
     line-height: 1.6;
 }
 
-/* ========== HEADER ========== */
 .tienda-header {
     background: var(--azul-primario);
     color: white;
@@ -74,7 +73,6 @@ body {
     background: rgba(255,255,255,0.2);
 }
 
-/* ========== CONTAINER ========== */
 .container {
     padding: 50px 5%;
     max-width: 1200px;
@@ -87,7 +85,6 @@ body {
     font-size: 30px;
 }
 
-/* ========== CARRITO ========== */
 .carrito-layout {
     display: grid;
     grid-template-columns: 1fr 360px;
@@ -193,7 +190,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== RESUMEN ========== */
 .cart-summary {
     background: white;
     border-radius: var(--radio-lg);
@@ -278,7 +274,6 @@ body {
     background: #c0392b;
 }
 
-/* ========== ALERTAS ========== */
 .alerta-stock {
     color: var(--rojo);
     font-size: 12px;
@@ -302,7 +297,6 @@ body {
     font-weight: 700;
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 900px) {
     .carrito-layout {
         grid-template-columns: 1fr;

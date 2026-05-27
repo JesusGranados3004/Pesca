@@ -71,6 +71,20 @@ nav {
     overflow: hidden;
 }
 
+.logo-link {
+    text-decoration: none;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
 .menu a::before {
     content: '';
     position: absolute;
@@ -630,7 +644,6 @@ footer::before {
     min-width: 120px;
 }
 
-/* Selector cantidad */
 .selector-cantidad {
     margin: 20px 28px !important;
     padding: 20px !important;
@@ -682,7 +695,6 @@ footer::before {
     font-weight: 500;
 }
 
-/* Modal botones */
 .modal-botones {
     display: flex;
     gap: 12px;
@@ -730,7 +742,6 @@ footer::before {
     transform: translateY(-2px);
 }
 
-/* ===== BOTÓN FLOTANTE CARRITO ===== */
 .carrito-flotante {
     position: fixed;
     bottom: 30px;
@@ -773,22 +784,37 @@ footer::before {
     box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     nav {
         padding: 16px 20px;
-        flex-direction: column;
-        gap: 12px;
+        position: relative;
     }
-    
+
+    .menu-toggle {
+        display: block;
+    }
+
     .menu {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--azul-primario);
+        flex-direction: column;
+        padding: 15px;
+        gap: 5px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-    
+
+    .menu.activo {
+        display: flex;
+    }
+
     .menu a {
-        padding: 8px 16px;
+        width: 100%;
+        text-align: center;
+        padding: 12px 16px;
         font-size: 14px;
     }
     
@@ -849,7 +875,6 @@ footer::before {
     }
 }
 
-/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -867,13 +892,11 @@ footer::before {
     background: var(--azul-hover);
 }
 
-/* ===== TOAST NOTIFICATIONS ===== */
-/* ===== TOAST NOTIFICATIONS ===== */
 #toast-container {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 99999; /* Aumentado para estar sobre todo */
+    z-index: 99999; 
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -897,7 +920,7 @@ footer::before {
     -webkit-backdrop-filter: blur(10px);
     animation: toastSlideIn 0.3s ease;
     border-left: 4px solid;
-    position: relative; /* Asegura stacking context propio */
+    position: relative; 
 }
 
 .toast.error {
@@ -934,10 +957,6 @@ footer::before {
     from { transform: translateX(0);   opacity: 1; }
     to   { transform: translateX(120%); opacity: 0; }
 }
-
-/* =========================
-   LOGOUT MODAL
-========================= */
 
 .logout-modal{
     position: fixed;

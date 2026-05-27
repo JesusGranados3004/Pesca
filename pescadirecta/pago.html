@@ -12,24 +12,24 @@
 </head>
 <body>
     <header class="tienda-header">
-        <a href="index.html" style="text-decoration: none;">
-            <div class="logo">🐟 PescaDirecta</div>
+        <a href="index.html" class="logo-link">
+            <div class="logo"><i class="fas fa-fish"></i> PescaDirecta</div>
         </a>
         <nav>
-            <a href="index.html">🏠 Inicio</a>
-            <a href="pago.html" class="activo">🛒 Carrito</a>
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <a href="pago.html" class="activo"><i class="fas fa-shopping-cart"></i> Carrito</a>
         </nav>
     </header>
 
     <div class="container carrito-container">
-        <h1 style="margin-bottom: 30px; color: #0077b6;">🛒 Tu Carrito</h1>
+        <h1 style="margin-bottom: 30px; color: #0077b6;"><i class="fas fa-shopping-cart"></i> Tu Carrito</h1>
         
         <div class="carrito-layout">
             <div>
                 <div id="carritoItems"></div>
                 <div id="carritoVacio" class="carrito-vacio" style="display: none;">
                     <i class="fas fa-shopping-cart"></i>
-                    <h2>🛒 Tu carrito está vacío</h2>
+                    <h2><i class="fas fa-shopping-cart"></i> Tu carrito está vacío</h2>
                     <p>Explora nuestros productos frescos.</p>
                     <a href="index.html#productos">← Ver productos</a>
                 </div>
@@ -52,10 +52,10 @@
                     <strong id="totalCarrito">$0.00</strong>
                 </div>
                 
-                <p id="mensajeStock" style="color: #e74c3c; display: none; margin-top: 10px;">⚠️ Revisa las cantidades</p>
+                <p id="mensajeStock" style="color: #e74c3c; display: none; margin-top: 10px;"><i class="fas fa-exclamation-triangle"></i> Revisa las cantidades</p>
                 
                 <button class="btn-pagar" id="btnPagar" onclick="procederPago()">
-                    <i class="fas fa-lock"></i> 💳 Proceder al pago
+                    <i class="fas fa-lock"></i> <i class="fas fa-credit-card"></i> Proceder al pago
                 </button>
                 <button class="btn-vaciar" onclick="vaciarCarrito()">
                     <i class="fas fa-trash"></i> Vaciar Carrito
@@ -67,7 +67,7 @@
     <div id="modalPago" class="modal-pago" aria-hidden="true">
         <div class="modal-pago-contenido">
             <button class="modal-pago-cerrar" type="button" onclick="cerrarModalPago()">×</button>
-            <h2>💳 Datos de pago</h2>
+            <h2><i class="fas fa-credit-card"></i> Datos de pago</h2>
             <p>Ingresa los datos de tu tarjeta para simular el pago.</p>
             <form id="formPago" class="modal-pago-form" onsubmit="enviarPago(event)">
                 <label>

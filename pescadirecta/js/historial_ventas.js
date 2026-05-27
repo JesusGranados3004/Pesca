@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(sesion => {
 
-            // SOLO vendedores
             if (!sesion.logueado || sesion.tipo !== 'vendedor') {
 
                 mostrarToast(
-                    "⛔ Acceso solo para vendedores",
+                    "<i class=\"fas fa-ban\"></i> Acceso solo para vendedores",
                     "error",
                     () => {
                         window.location.href = "index.html";
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(() => {
 
             mostrarToast(
-                "❌ Error verificando sesión",
+                "<i class=\"fas fa-times-circle\"></i> Error verificando sesión",
                 "error",
                 () => {
                     window.location.href = "iniciarSesion.html";
@@ -38,10 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container = document.getElementById('toast-container');

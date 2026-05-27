@@ -4,10 +4,10 @@ const id = params.get("id");
 function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
     const iconos = {
-        error: '❌',
-        exito: '✅',
-        aviso: '⚠️',
-        info: 'ℹ️'
+        error: '<i class="fas fa-times-circle"></i>',
+        exito: '<i class="fas fa-check-circle"></i>',
+        aviso: '<i class="fas fa-exclamation-triangle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
 
     let container = document.getElementById('toast-container');
@@ -28,7 +28,6 @@ function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
     container.appendChild(toast);
 
-    // FORZAR RENDER
     requestAnimationFrame(() => {
         toast.classList.add('mostrar');
     });
@@ -86,7 +85,7 @@ function cambiarModo(modo) {
         inputImagen.required = false;
         hintImagen.textContent = 'Deja vacío para mantener la imagen actual';
         
-        btnGuardar.textContent = '💾 Guardar Corrección';
+        btnGuardar.textContent = '<i class="fas fa-save"></i> Guardar Corrección';
         requeridoFecha.style.display = 'none';
         fechaInput.required = false;
 
@@ -102,7 +101,7 @@ function cambiarModo(modo) {
         inputImagen.required = true;
         hintImagen.textContent = 'Sube una foto del nuevo producto (obligatorio)';
         
-        btnGuardar.textContent = '📦 Agregar Stock';
+        btnGuardar.textContent = '<i class="fas fa-box"></i> Agregar Stock';
 
         requeridoFecha.style.display = 'inline';
         fechaInput.required = true;
@@ -152,7 +151,6 @@ fetchSeguro("php/producto.php?origen=obtener_producto&id=" + id)
         };
     }
 
-    // ========== VALIDACIÓN: ¿Está agotado? ==========
     const cantidadActual = parseFloat(datosOriginales.cantidad) || 0;
     const disponibleActual = parseInt(datosOriginales.disponibilidad) || 0;
     const estaAgotado = cantidadActual <= 0 || disponibleActual === 0;
@@ -168,7 +166,7 @@ fetchSeguro("php/producto.php?origen=obtener_producto&id=" + id)
         
         const mensaje = document.createElement('div');
         mensaje.className = 'mensaje-info';
-        mensaje.innerHTML = 'ℹ️ Este producto aún tiene stock. Para agregar más kilos, usa el modo <strong>Corrección</strong> y cambia la cantidad.';
+        mensaje.innerHTML = '<i class="fas fa-info-circle"></i> Este producto aún tiene stock. Para agregar más kilos, usa el modo <strong>Corrección</strong> y cambia la cantidad.';
         document.querySelector('.selector-modo').appendChild(mensaje);
     }
 
