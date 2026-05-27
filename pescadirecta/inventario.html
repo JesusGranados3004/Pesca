@@ -140,7 +140,7 @@
                         mostrarToast('Acceso denegado. Solo vendedores.', 'aviso');
                         setTimeout(() => {
                             window.location.href = 'index.html?_=' + Date.now();
-                        }, 1800);
+                        }, 4000);
                         return;
                     }
                     cargarMisProductos();
@@ -149,7 +149,7 @@
                     mostrarToast('Error al verificar sesión.', 'error');
                     setTimeout(() => {
                         window.location.href = 'index.html?_=' + Date.now();
-                    }, 1800);
+                    }, 4000);
                 });
         });
         
