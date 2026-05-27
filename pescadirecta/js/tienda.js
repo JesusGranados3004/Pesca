@@ -218,7 +218,14 @@ function procederPago() {
 
             if (!sesion.logueado) {
 
-                window.location.href = "index.html?_=" + Date.now();
+                mostrarToast(
+                    "<i class=\"fas fa-lock\"></i> Debes iniciar sesión",
+                    "aviso",
+                    2000,
+                    () => {
+                        window.location.href = "index.html?_=" + Date.now();
+                    }
+                );
 
                 return;
             }

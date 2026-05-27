@@ -21,7 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         })
         .catch(() => {
-            window.location.href = "index.html?_=" + Date.now();
+            mostrarToast(
+                "<i class=\"fas fa-times-circle\"></i> Error verificando sesión",
+                "error",
+                () => {
+                    window.location.href = "index.html?_=" + Date.now();
+                }
+            );
         });
 
 });

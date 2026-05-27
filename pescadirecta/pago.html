@@ -109,11 +109,17 @@
                 .then(res => res.json())
                 .then(sesion => {
                     if (!sesion.logueado || sesion.tipo !== 'consumidor') {
-                        window.location.href = 'index.html?_=' + Date.now();
+                        mostrarToast('Debes iniciar sesión para comprar', 'aviso');
+                        setTimeout(() => {
+                            window.location.href = 'index.html?_=' + Date.now();
+                        }, 1800);
                     }
                 })
                 .catch(() => {
-                    window.location.href = 'index.html?_=' + Date.now();
+                    mostrarToast('Error al verificar sesión', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'index.html?_=' + Date.now();
+                    }, 1800);
                 });
         });
     </script>
