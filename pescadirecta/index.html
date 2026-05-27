@@ -18,10 +18,10 @@
             <div class="logo"><i class="fas fa-fish"></i> PescaDirecta</div>
         </a>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <nav id="menuNav">
+        <div class="menu" id="menuNav">
            <a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a>
            <a href="pago.html"><i class="fas fa-shopping-cart"></i> Carrito</a>
-        </nav>
+        </div>
     </nav>
 
     <section class="hero">
@@ -115,10 +115,6 @@
     <script src="js/index.js" defer></script>
     <script src="js/sesion.js"></script>
     <script>
-
-        function toggleMenu() {
-            document.getElementById('menuNav').classList.toggle('activo');
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
 

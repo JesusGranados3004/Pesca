@@ -177,6 +177,11 @@ function mostrarMensajeSesion() {
 }
 
 
+function toggleMenu() {
+    document.getElementById('menuNav').classList.toggle('activo');
+}
+
 window.fetchSeguro = fetchSeguro;
 window.verificarSesion = verificarSesion;
 window.cerrarSesion = cerrarSesion;
+window.toggleMenu = toggleMenu;
