@@ -150,14 +150,14 @@
                         mostrarToast('Acceso solo para vendedores', 'aviso');
                         setTimeout(() => {
                             window.location.href = 'index.html?_=' + Date.now();
-                        }, 4000);
+                        }, 2000);
                     }
                 })
                 .catch(() => {
                     mostrarToast('Error al verificar sesión', 'error');
                     setTimeout(() => {
                         window.location.href = 'index.html?_=' + Date.now();
-                    }, 4000);
+                    }, 2000);
                 });
         });
     </script>

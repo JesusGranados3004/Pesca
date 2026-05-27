@@ -1,34 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    const pagina = window.location.pathname.split('/').pop() || 'index.html';
-
     fetch('https://pesca-mcl1.onrender.com/php/verificar_sesion.php', {
         cache: 'no-store',
         headers: { 'Cache-Control': 'no-cache' }
     })
     .then(r => r.json())
     .then(data => {
-        const paginasVendedor = ['inventario.html', 'historial_ventas.html', 'editar_producto.html'];
-        const paginasConsumidor = ['mis_compras.html', 'pago.html'];
-
-        if (paginasVendedor.includes(pagina) && (!data.logueado || data.tipo !== 'vendedor')) {
-            window.location.replace('index.html?_=' + Date.now());
-            return;
-        }
-
-        if (paginasConsumidor.includes(pagina) && (!data.logueado || data.tipo !== 'consumidor')) {
-            window.location.replace('index.html?_=' + Date.now());
-            return;
-        }
-
         actualizarMenu(data);
     })
     .catch(() => {
-        const paginasProtegidas = ['inventario.html', 'historial_ventas.html', 'editar_producto.html', 'mis_compras.html', 'pago.html'];
-        if (paginasProtegidas.includes(pagina)) {
-            window.location.replace('index.html?_=' + Date.now());
-            return;
-        }
         actualizarMenu({logueado: false});
     });
 

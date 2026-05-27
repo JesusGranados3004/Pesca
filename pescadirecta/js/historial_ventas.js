@@ -81,7 +81,7 @@ function mostrarToast(mensaje, tipo = 'info', onComplete = null) {
 
         }, 400);
 
-    }, 3000);
+    }, 2000);
 }
 
 function cargarHistorial() {
